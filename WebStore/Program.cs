@@ -1,6 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
 
-app.MapGet("/", () => "Hello World!");
+var services = builder.Services; //Получили сервисы нашего приложения
+services.AddControllersWithViews(); //Подключили(Добавили) MVC
 
-app.Run();
+
+var app = builder.Build(); //Сборка приложения 
+
+//-----------------Конвейер обработки входного соединения---------------------------
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();    
+}
+
+app.UseRouting(); //Добавление системы маршрутизации
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "/{controller=Home}/{action=Index}/{id?}");
+
+app.Run(); //Запуск приложения
