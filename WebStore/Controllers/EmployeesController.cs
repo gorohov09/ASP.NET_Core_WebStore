@@ -19,5 +19,16 @@ namespace WebStore.Controllers
             var result = List_Employees;
             return View(result);
         }
+
+        public IActionResult Details(int id)
+        {
+            if ((id < 1) || (id > List_Employees.Count))
+            {
+                return BadRequest(404);
+            }
+
+            var employee = List_Employees.First(e => e.Id == id);
+            return View(employee);
+        }
     }
 }
