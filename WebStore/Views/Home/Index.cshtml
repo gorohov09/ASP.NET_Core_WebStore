@@ -1,13 +1,21 @@
-﻿<html>
-<head>
-    <title>Главная страница</title>
-</head>
+﻿    <partial name="Partial/_Slider" />
+    
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                    <partial name="Partial/_LeftSideBar"  />
+                </div>
+                
+                <div class="col-sm-9 padding-right">
 
-<body>
-    <h1>Привет с главной страницы</h1>
-    <br />
-    <a href="~/Home/Employees">Список сотрудников</a>
-
-</body>
-
-</html>
+                    <partial name="Partial/_Products" />
+                    
+                    <partial name="Partial/_CategoryTab" />
+                    
+                    <partial name="Partial/_RecomendedItems" />
+                    
+                </div>
+            </div>
+        </div>
+    </section>

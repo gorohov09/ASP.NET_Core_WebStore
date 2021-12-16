@@ -1,18 +1,7 @@
 ﻿@model IEnumerable<WebStore.Models.Employee>
 
-@{
-    Layout = null;
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Список сотрудников</title>
-</head>
-
-<body>
-    <table>
+<div class="container">
+    <table class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -31,14 +20,10 @@
                     <td>@employee.FirstName</td>
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
-                    <td><a href="~/Home/Employee?id=@employee.Id">Инфо.</a></td>
+                    <td><a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">Инфо.</a></td>
                 </tr>
             }
         </tbody>
     </table>
-    <a href="~/Home/Index">На главную</a>
-</body>
-
-
-
-</html>
+    <a asp-controller="Home" asp-action="Index">На главную</a>
+</div>

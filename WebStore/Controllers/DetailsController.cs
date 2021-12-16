@@ -2,7 +2,7 @@
 
 namespace WebStore.Controllers
 {
-    public class HomeController : Controller
+    public class DetailsController : Controller
     {
         public IActionResult Index()
         {

@@ -13,6 +13,8 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();    
 }
 
+app.UseStaticFiles(); //Добавляем в конвейер обработки использование статических файлов(html, css, js, img)
+
 app.UseRouting(); //Добавление системы маршрутизации
 
 app.MapControllerRoute(
