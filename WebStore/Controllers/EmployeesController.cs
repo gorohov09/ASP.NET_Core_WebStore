@@ -52,6 +52,7 @@ namespace WebStore.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public IActionResult Edit(EmployeeEditViewModel Model)
         {
             // Обработка модели
