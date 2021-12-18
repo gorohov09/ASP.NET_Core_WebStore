@@ -1,5 +1,7 @@
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
+using WebStore.Services;
+using WebStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
 
@@ -8,6 +10,8 @@ services.AddControllersWithViews(opt =>
 {
     opt.Conventions.Add(new TestConvention()); //Добавление соглашения
 }); //Подключили(Добавили) MVC
+
+services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();
 
 
 var app = builder.Build(); //Сборка приложения 
