@@ -1,41 +1,42 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Data;
 using WebStore.Models;
+using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
     public class EmployeesController : Controller
     {
-        private ICollection<Employee> List_Employees;
+        private readonly IEmployeesData _EmployeesData;
 
-        public EmployeesController()
+        public EmployeesController(IEmployeesData EmployeesData)
         {
-            List_Employees = TestData.Employees;
+            _EmployeesData = EmployeesData;
         }
 
         public IActionResult Index()
         {
-            var result = List_Employees;
+            var result = _EmployeesData.GetAll();
             return View(result);
         }
 
         public IActionResult Details(int id)
         {
-            if ((id < 1) || (id > List_Employees.Count))
-            {
-                return BadRequest(404);
-            }
+            var employee = _EmployeesData.GetById(id);
 
-            var employee = List_Employees.First(e => e.Id == id);
+            if (employee is null)
+                return NotFound();
+            
             return View(employee);
         }
 
         public IActionResult Create() => View();
 
+        [HttpGet]
         public IActionResult Edit(int id)
         {
-            var employee = List_Employees.FirstOrDefault(e => e.Id == id);
+            var employee = _EmployeesData.GetById(id);
 
             if (employee == null)
                 return NotFound();
@@ -55,7 +56,18 @@ namespace WebStore.Controllers
         [HttpPost]
         public IActionResult Edit(EmployeeEditViewModel Model)
         {
-            // Обработка модели
+            var employee = new Employee
+            {
+                Id = Model.Id,
+                LastName = Model.LastName,
+                FirstName = Model.FirstName,
+                Patronymic = Model.Patronymic,
+                Age = Model.Age
+
+            };
+
+            if (!_EmployeesData.Edit(employee))
+                return NotFound();
 
             return RedirectToAction("Index");
         }

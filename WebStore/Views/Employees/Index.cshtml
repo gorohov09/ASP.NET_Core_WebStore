@@ -24,7 +24,10 @@
                     <td>@employee.FirstName</td>
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
-                    <td><a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">Инфо.</a></td>
+                    <td>
+                        <a asp-controller="Employees" asp-action="Details" asp-route-id="@employee.Id">Инфо.</a>
+                        <a asp-controller="Employees" asp-action="Edit" asp-route-id="@employee.Id">Редакт.</a>
+                    </td>
                 </tr>
             }
         </tbody>
