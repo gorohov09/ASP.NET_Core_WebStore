@@ -1,4 +1,5 @@
 using WebStore.Infrastructure.Conventions;
+using WebStore.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
 
@@ -18,9 +19,15 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();    
 }
 
+//app.Map("/testpath", async context => await context.Response.WriteAsync("TestMiddleware")); //Создание собственного промежуточного ПО
+
 app.UseStaticFiles(); //Добавляем в конвейер обработки использование статических файлов(html, css, js, img)
 
 app.UseRouting(); //Добавление системы маршрутизации
+
+app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
+
+app.UseWelcomePage("/welcome");
 
 app.MapControllerRoute(
     name: "default",
