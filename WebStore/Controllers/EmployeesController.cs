@@ -3,6 +3,7 @@ using WebStore.Models;
 
 namespace WebStore.Controllers
 {
+    //[Route("Staff/{action=Index}/{id?}")]
     public class EmployeesController : Controller
     {
         private static readonly List<Employee> List_Employees = new List<Employee>()
