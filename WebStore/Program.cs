@@ -29,6 +29,8 @@ app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
 
 app.UseWelcomePage("/welcome");
 
+//app.MapDefaultControllerRoute(); //Добавление маршрута по умолчанию
+
 app.MapControllerRoute(
     name: "default",
     pattern: "/{controller=Home}/{action=Index}/{id?}");
