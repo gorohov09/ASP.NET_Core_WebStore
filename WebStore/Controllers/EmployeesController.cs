@@ -31,26 +31,37 @@ namespace WebStore.Controllers
             return View(employee);
         }
 
-        public IActionResult Create() => View();
+        public IActionResult Create()
+        {
+            return View("Edit", new EmployeeViewModel());
+        }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            var employee = _EmployeesData.GetById(id);
-
-            if (employee == null)
-                return NotFound();
-
-            var model = new EmployeeViewModel()
+            if (id is null)
             {
-                Id = employee.Id,
-                LastName = employee.LastName,
-                FirstName = employee.FirstName,
-                Patronymic = employee.Patronymic,
-                Age = employee.Age
-            };
+                return View(new EmployeeViewModel());
+            }
+            else
+            {
+                var employee = _EmployeesData.GetById((int)id);
 
-            return View(model);
+                if (employee == null)
+                    return NotFound();
+
+                var model = new EmployeeViewModel()
+                {
+                    Id = employee.Id,
+                    LastName = employee.LastName,
+                    FirstName = employee.FirstName,
+                    Patronymic = employee.Patronymic,
+                    Age = employee.Age
+                };
+
+                return View(model);
+            }
+            
         }
 
         [HttpPost]
@@ -66,7 +77,9 @@ namespace WebStore.Controllers
 
             };
 
-            if (!_EmployeesData.Edit(employee))
+            if (Model.Id == 0)
+                _EmployeesData.Add(employee);
+            else if (!_EmployeesData.Edit(employee))
                 return NotFound();
 
             return RedirectToAction("Index");
