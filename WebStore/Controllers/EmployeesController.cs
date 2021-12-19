@@ -9,9 +9,11 @@ namespace WebStore.Controllers
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
+        private readonly ILogger<EmployeesController> _Logger;
 
-        public EmployeesController(IEmployeesData EmployeesData)
+        public EmployeesController(IEmployeesData EmployeesData, ILogger<EmployeesController> Logger)
         {
+            _Logger = Logger;
             _EmployeesData = EmployeesData;
         }
 
@@ -47,9 +49,12 @@ namespace WebStore.Controllers
             {
                 var employee = _EmployeesData.GetById((int)id);
 
-                if (employee == null)
+                if (employee is null)
+                {
+                    _Logger.LogWarning("При редактировании сотрудника с id:{0} он не был найден", id);
                     return NotFound();
-
+                }
+                    
                 var model = new EmployeeViewModel()
                 {
                     Id = employee.Id,
@@ -78,7 +83,12 @@ namespace WebStore.Controllers
             };
 
             if (Model.Id == 0)
+            {
                 _EmployeesData.Add(employee);
+                _Logger.LogInformation("Создание нового сотрудника {0}", employee);
+
+            }
+
             else if (!_EmployeesData.Edit(employee))
                 return NotFound();
 
@@ -113,6 +123,7 @@ namespace WebStore.Controllers
         {
             if (!_EmployeesData.Delete(id))
                 return NotFound();
+            _Logger.LogInformation("Сотрудник с id:{0} удален", id);
 
             return RedirectToAction("Index");
         }
