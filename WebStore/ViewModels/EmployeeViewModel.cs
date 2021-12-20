@@ -10,6 +10,10 @@
 
         public string Patronymic { get; set; }
 
-        public int Age { get; set; }    
+        public int Age { get; set; } 
+        
+        public DateTime Birthday { get; set; }
+
+        public int Salary { get; set; }
     }
 }

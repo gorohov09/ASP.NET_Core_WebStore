@@ -20,6 +20,8 @@
                 <th>Имя</th>
                 <th>Отчество</th>
                 <th>Возраст</th>
+                <th>Дата рождения</th>
+                <th>Зарплата</th>
             </tr>
         </thead>
         <tbody>
@@ -39,6 +41,8 @@
                     <td>@employee.FirstName</td>
                     <td>@employee.Patronymic</td>
                     <td>@employee.Age</td>
+                    <td>@employee.Birthday.ToShortDateString()</td>
+                    <td>@employee.Salary</td>
                     <td>
                         <a asp-controller="Employees" asp-action="Delete" asp-route-id="@employee.Id" class="text-danger">
                             <i class="fa fa-trash-o"></i>

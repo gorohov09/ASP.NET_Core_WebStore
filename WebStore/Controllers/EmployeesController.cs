@@ -61,7 +61,9 @@ namespace WebStore.Controllers
                     LastName = employee.LastName,
                     FirstName = employee.FirstName,
                     Patronymic = employee.Patronymic,
-                    Age = employee.Age
+                    Age = employee.Age,
+                    Birthday = employee.Birthday,
+                    Salary = employee.Salary
                 };
 
                 return View(model);
@@ -78,8 +80,9 @@ namespace WebStore.Controllers
                 LastName = Model.LastName,
                 FirstName = Model.FirstName,
                 Patronymic = Model.Patronymic,
-                Age = Model.Age
-
+                Age = Model.Age,
+                Birthday = Model.Birthday,
+                Salary = Model.Salary
             };
 
             if (Model.Id == 0)

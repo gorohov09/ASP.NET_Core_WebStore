@@ -68,6 +68,8 @@ namespace WebStore.Services
             db_employee.LastName = employee.LastName;
             db_employee.Patronymic = employee.Patronymic;
             db_employee.Age = employee.Age;
+            db_employee.Birthday = employee.Birthday;
+            db_employee.Salary = employee.Salary;
 
             _Logger.LogInformation("Информация о сотруднике id:{0} была изменена", employee.Id);
 
