@@ -12,7 +12,7 @@ services.AddControllersWithViews(opt =>
 }); //Подключили(Добавили) MVC
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();//Добавление нашего сервиса для работы с сотрудниками
-services.AddSingleton(<IProductData, InMemoryProductData>);
+services.AddSingleton<IProductData, InMemoryProductData>();
 
 
 var app = builder.Build(); //Сборка приложения 
