@@ -11,7 +11,8 @@ services.AddControllersWithViews(opt =>
     opt.Conventions.Add(new TestConvention()); //Добавление соглашения
 }); //Подключили(Добавили) MVC
 
-services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
+services.AddSingleton<IEmployeesData, InMemoryEmployeesData>();//Добавление нашего сервиса для работы с сотрудниками
+services.AddSingleton(<IProductData, InMemoryProductData>);
 
 
 var app = builder.Build(); //Сборка приложения 
