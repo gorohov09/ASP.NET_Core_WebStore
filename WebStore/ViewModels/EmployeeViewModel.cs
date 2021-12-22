@@ -34,5 +34,13 @@ namespace WebStore.ViewModels
 
         [Display(Name = "Зарплата")]
         public int Salary { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext context)
+        {
+            if (LastName.Length > 100)
+                yield return new ValidationResult("Длина фамилии больше 100 символов");
+
+            yield return ValidationResult.Success!;
+        }
     }
 }
