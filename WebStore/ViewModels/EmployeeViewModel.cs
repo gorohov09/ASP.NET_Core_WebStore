@@ -8,7 +8,7 @@ namespace WebStore.ViewModels
         [HiddenInput(DisplayValue =false)]
         public int Id { get; set; }
 
-        [Display(Name ="Фамилия")]
+        [Display(Name ="Фамилияя")]
         [Required(ErrorMessage = "Фамилия обязательна")]
         [StringLength(255, MinimumLength =2, ErrorMessage = "Длина должна быть от 2 до 255 символов")]
         //[RegularExpression(@"([А-ЯЁ][а-яё]+)|([A-Z][a-z]+)")
