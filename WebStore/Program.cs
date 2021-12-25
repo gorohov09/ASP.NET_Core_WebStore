@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using WebStore.DAL.Context;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
@@ -10,6 +12,9 @@ services.AddControllersWithViews(opt =>
 {
     opt.Conventions.Add(new TestConvention()); //Добавление соглашения
 }); //Подключили(Добавили) MVC
+
+services.AddDbContext<WebStoreDB>(opt => opt
+    .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddSingleton<IProductData, InMemoryProductData>();
