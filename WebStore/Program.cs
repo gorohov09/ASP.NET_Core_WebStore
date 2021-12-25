@@ -14,7 +14,7 @@ services.AddControllersWithViews(opt =>
 }); //Подключили(Добавили) MVC
 
 services.AddDbContext<WebStoreDB>(opt => opt
-    .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+    .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Подключение к БД
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddSingleton<IProductData, InMemoryProductData>();
