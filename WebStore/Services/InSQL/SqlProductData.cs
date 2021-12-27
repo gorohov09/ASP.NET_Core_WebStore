@@ -28,6 +28,7 @@ namespace WebStore.Services.InSQL
             if(Filter?.BrandId != null)
                 query = query.Where(p => p.BrandId == Filter.BrandId);
 
+            return query;
             
         }
 

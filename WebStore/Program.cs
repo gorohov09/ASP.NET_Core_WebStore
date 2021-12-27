@@ -3,6 +3,7 @@ using WebStore.DAL.Context;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
+using WebStore.Services.InSQL;
 using WebStore.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args); //—оздание построител€ приложени€
@@ -18,7 +19,7 @@ services.AddDbContext<WebStoreDB>(opt => opt
 services.AddTransient<IDbInitializer, DbInitializer>();
 
 services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //ƒобавление нашего сервиса дл€ работы с сотрудниками
-services.AddSingleton<IProductData, InMemoryProductData>();
+services.AddScoped<IProductData, SqlProductData>();
 
 
 
