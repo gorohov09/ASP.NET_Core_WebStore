@@ -18,7 +18,7 @@ services.AddDbContext<WebStoreDB>(opt => opt
     .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Подключение к БД
 services.AddTransient<IDbInitializer, DbInitializer>();
 
-services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
+services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>();
 
 
@@ -28,7 +28,7 @@ var app = builder.Build(); //Сборка приложения
 await using(var scope = app.Services.CreateAsyncScope())
 {
     var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await db_initializer.InitializeAsync(false);
+    await db_initializer.InitializeAsync();
 }
 
 //-----------------Конвейер обработки входного соединения---------------------------

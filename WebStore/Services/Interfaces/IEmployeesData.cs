@@ -1,4 +1,6 @@
-﻿using WebStore.Models;
+﻿
+
+using WebStore.Domain.Entities;
 
 namespace WebStore.Services.Interfaces
 {
