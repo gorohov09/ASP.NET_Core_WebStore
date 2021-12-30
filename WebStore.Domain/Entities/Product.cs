@@ -1,8 +1,11 @@
-﻿using WebStore.Domain.Entities.Base;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using WebStore.Domain.Entities.Base;
 using WebStore.Domain.Entities.Base.Interfaces;
 
 namespace WebStore.Domain.Entities
 {
+    [Index(nameof(Name))] //Индексация таблицы по названию товара
     public class Product : NamedEntity, IOrderedEntity
     {
         public int Order { get; set; }
@@ -13,6 +16,13 @@ namespace WebStore.Domain.Entities
 
         public string ImageUrl { get; set; }
 
-        public decimal Price { get; set; }  
+        [Column(TypeName = "decimal(18,2)")] //Указание типа, который храним в БД
+        public decimal Price { get; set; }
+        
+        [ForeignKey(nameof(BrandId))]
+        public Brand Brand { get; set; }
+
+        [ForeignKey(nameof(SectionId))]
+        public Section Section { get; set; }
     }
 }
