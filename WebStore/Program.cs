@@ -17,7 +17,7 @@ services.AddControllersWithViews(opt =>
 services.AddDbContext<WebStoreDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
-services.AddSingleton<IEmployeesData, InMemoryEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
+services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 
 

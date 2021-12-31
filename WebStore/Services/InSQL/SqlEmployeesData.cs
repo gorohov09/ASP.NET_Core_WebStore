@@ -42,6 +42,8 @@ namespace WebStore.Services.InSQL
 
             _db.Employees.Remove(employee);
 
+            _db.SaveChanges();
+
             _Logger.LogInformation("Сотруднике с id:{0} был успешно удален", employee.Id);
 
             return true;
@@ -52,8 +54,8 @@ namespace WebStore.Services.InSQL
             if (employee == null)
                 throw new ArgumentException(nameof(employee));
 
-            if (_db.Employees.Contains(employee))
-                return true;
+            //if (_db.Employees.Contains(employee))
+            //    return true;
 
             var db_employee = GetById(employee.Id);
 
