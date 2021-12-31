@@ -93,6 +93,18 @@ namespace WebStore.Services
                 await _db.Database.CommitTransactionAsync(cancel);
             }
 
+            _Logger.LogInformation("Добавление сотрудников");
+            await using (await _db.Database.BeginTransactionAsync(cancel))
+            {
+                await _db.Employees.AddRangeAsync(TestData.Employees, cancel);
+
+                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel);
+                await _db.SaveChangesAsync(cancel);
+                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] OFF", cancel);
+
+                await _db.Database.CommitTransactionAsync(cancel);
+            }
+
             _Logger.LogInformation("Инициализация тестовых данных выполнена успешно");
         }
     }
