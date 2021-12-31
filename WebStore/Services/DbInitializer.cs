@@ -9,9 +9,9 @@ namespace WebStore.Services
     {
         private readonly WebStoreDB _db;
 
-        private readonly ILogger _Logger;
+        private readonly ILogger<DbInitializer> _Logger;
 
-        public DbInitializer(WebStoreDB db, ILogger Logger)
+        public DbInitializer(WebStoreDB db, ILogger<DbInitializer> Logger)
         {
             _db = db;
             _Logger = Logger;
