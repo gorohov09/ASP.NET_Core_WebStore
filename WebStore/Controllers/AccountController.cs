@@ -63,8 +63,10 @@ namespace WebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {
-            if (!ModelState.IsValid)
-                return View(Model);
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
+
+            //if (!ModelState.IsValid)
+            //    return View(Model);
 
             var login_result = await _SignInManager.PasswordSignInAsync(
                 Model.UserName,
@@ -74,10 +76,12 @@ namespace WebStore.Controllers
 
             if (login_result.Succeeded)
             {
-                if (Url.IsLocalUrl(Model.ReturnUrl))
-                    return Redirect(Model.ReturnUrl);
+                //if (Url.IsLocalUrl(Model.ReturnUrl))
+                //    return Redirect(Model.ReturnUrl);
 
-                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Index", "Home");
+
+                return LocalRedirect(Model.ReturnUrl ?? "/");
             }
 
             ModelState.AddModelError("", "Неверное имя пользователя, или пароль");
