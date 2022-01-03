@@ -45,8 +45,6 @@ app.UseRouting(); //Добавление системы маршрутизации
 
 app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
 
-app.UseWelcomePage("/welcome");
-
 //app.MapDefaultControllerRoute(); //Добавление маршрута по умолчанию
 
 app.MapControllerRoute(
