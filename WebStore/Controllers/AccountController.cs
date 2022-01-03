@@ -9,6 +9,12 @@ namespace WebStore.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Register()
+        {
+
+        }
+
         public IActionResult Login()
         {
             return View();
