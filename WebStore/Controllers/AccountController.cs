@@ -23,7 +23,7 @@ namespace WebStore.Controllers
             return View(new RegisterUserViewModel());
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
             if (!ModelState.IsValid)
@@ -60,7 +60,7 @@ namespace WebStore.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {
             if (!ModelState.IsValid)
