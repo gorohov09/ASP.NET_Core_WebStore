@@ -73,6 +73,7 @@ namespace WebStore.Controllers
             
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Edit(EmployeeViewModel Model)
         {
@@ -106,6 +107,7 @@ namespace WebStore.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -129,6 +131,7 @@ namespace WebStore.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult DeleteConfirmed(int id)
         {
