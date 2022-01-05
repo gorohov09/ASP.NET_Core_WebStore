@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.Data;
 using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
@@ -6,6 +7,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    [Authorize] //Данную информацию могут смотреть только авторизованные пользователи
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
