@@ -24,7 +24,15 @@ namespace WebStore.Services
 
             //await _db.Database.EnsureCreatedAsync();
 
-            await _db.Database.MigrateAsync(Cancel).ConfigureAwait(false);
+            var pending_migrations = await _db.Database.GetPendingMigrationsAsync(Cancel);
+            if (pending_migrations.Any())
+            {
+                _Logger.LogInformation("Выполнение миграции БД...");
+
+                await _db.Database.MigrateAsync(Cancel).ConfigureAwait(false);
+
+                _Logger.LogInformation("Выполнение миграции БД выполнено успешно");
+            }
 
             await InitializerProductAsync(Cancel).ConfigureAwait(false);
 
@@ -72,13 +80,13 @@ namespace WebStore.Services
 
                 product.Id = 0;
                 product.SectionId = 0;
-                product.BrandId = 0;
+                product.BrandId = null;
             }
 
             foreach (var section in TestData.Sections)
             {
                 section.Id = 0;
-                section.ParentId = 0;
+                section.ParentId = null;
             }
 
             foreach (var brand in TestData.Brands)
