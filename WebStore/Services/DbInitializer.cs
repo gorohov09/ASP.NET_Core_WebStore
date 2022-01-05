@@ -28,6 +28,8 @@ namespace WebStore.Services
 
             await InitializerProductAsync(Cancel).ConfigureAwait(false);
 
+            await InitializeEmployeesAsync(Cancel).ConfigureAwait(false);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
@@ -89,6 +91,15 @@ namespace WebStore.Services
 
                 await _db.Database.CommitTransactionAsync(Cancel);
 
+            }
+        }
+
+        private async Task InitializeEmployeesAsync(CancellationToken Cancel)
+        {
+            if (await _db.Employees.AnyAsync())
+            {
+                _Logger.LogInformation("Инициализация сотрудников не требуется");
+                return;
             }
 
             await using (await _db.Database.BeginTransactionAsync(Cancel))
