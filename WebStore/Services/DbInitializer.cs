@@ -104,13 +104,11 @@ namespace WebStore.Services
 
             await using (await _db.Database.BeginTransactionAsync(Cancel))
             {
+                TestData.Employees.ForEach(employee => employee.Id = 0);
+
                 await _db.Employees.AddRangeAsync(TestData.Employees, Cancel);
 
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", Cancel);
-
                 await _db.SaveChangesAsync(Cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] OFF", Cancel);
 
                 await _db.Database.CommitTransactionAsync(Cancel);
             }
