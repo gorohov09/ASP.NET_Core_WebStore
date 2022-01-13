@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL.Context;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
@@ -20,6 +22,44 @@ services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 
+services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
+    .AddEntityFrameworkStores<WebStoreDB>()
+    .AddDefaultTokenProviders();
+
+
+services.Configure<IdentityOptions>(opt =>
+{
+#if DEBUG
+    opt.Password.RequireDigit = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireLowercase = false;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequiredLength = 3;
+    opt.Password.RequiredUniqueChars = 3;
+#endif
+
+    opt.User.RequireUniqueEmail = false;
+    opt.User.AllowedUserNameCharacters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+
+    opt.Lockout.AllowedForNewUsers = false;
+    opt.Lockout.MaxFailedAccessAttempts = 3;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(20);
+
+});
+
+services.ConfigureApplicationCookie(opt =>
+{
+    opt.Cookie.Name = "MyWebStore.Gb";
+    opt.Cookie.HttpOnly = true;
+
+    opt.Cookie.Expiration = TimeSpan.FromDays(10);
+
+    opt.LoginPath = "/Account/Login";
+    opt.LogoutPath = "/Account/Logout";
+    opt.AccessDeniedPath = "Account/AccessDenied";
+
+    opt.SlidingExpiration = true;
+});
 
 var app = builder.Build(); //Сборка приложения 
 
@@ -42,6 +82,10 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles(); //Добавляем в конвейер обработки использование статических файлов(html, css, js, img)
 
 app.UseRouting(); //Добавление системы маршрутизации
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
 
