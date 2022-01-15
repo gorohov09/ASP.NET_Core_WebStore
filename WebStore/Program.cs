@@ -52,11 +52,12 @@ services.ConfigureApplicationCookie(opt =>
     opt.Cookie.Name = "MyWebStore.Gb";
     opt.Cookie.HttpOnly = true;
 
-    opt.Cookie.Expiration = TimeSpan.FromDays(10);
+    //opt.Cookie.Expiration = TimeSpan.FromDays(10);
+    opt.ExpireTimeSpan = TimeSpan.FromMinutes(15);
 
     opt.LoginPath = "/Account/Login";
     opt.LogoutPath = "/Account/Logout";
-    opt.AccessDeniedPath = "Account/AccessDenied";
+    opt.AccessDeniedPath = "/Account/AccessDenied";
 
     opt.SlidingExpiration = true;
 });
