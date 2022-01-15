@@ -36,13 +36,13 @@ namespace WebStore.Controllers
                 UserName = model.UserName,
             };
 
-            var registration_result = await _userManager.CreateAsync(user);
+            var registration_result = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(true);
 
             if (registration_result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
 
-                RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home");
             }
 
             foreach (var error in registration_result.Errors)
@@ -67,8 +67,10 @@ namespace WebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View(model);
+            #region Почему-то не работает
+            //if (!ModelState.IsValid)
+            //    return View(model);
+            #endregion
 
             var login_result = await _signInManager.PasswordSignInAsync(
                                              model.UserName,
