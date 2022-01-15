@@ -42,7 +42,7 @@ namespace WebStore.Controllers
             {
                 await _signInManager.SignInAsync(user, false);
 
-                RedirectToAction("Home", "Index");
+                RedirectToAction("Index", "Home");
             }
 
             foreach (var error in registration_result.Errors)
@@ -53,15 +53,41 @@ namespace WebStore.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Login()
+        [HttpGet]
+        public IActionResult Login(string ReturnUrl)
         {
+            LoginViewModel model = new LoginViewModel();
 
-            return View();
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var login_result = await _signInManager.PasswordSignInAsync(
+                                             model.UserName,
+                                             model.Password,
+                                             model.RememberMe,
+                                             true);
+            if (login_result.Succeeded)
+            {
+                if (Url.IsLocalUrl(model.ReturnUrl))
+                    return Redirect(model.ReturnUrl);
+
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "Неверное имя пользователя или пароль");
+
+            return View(model);
         }
 
         public IActionResult Logout()
         {
-            return RedirectToAction("Home", "Index");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult AccessDenied()
