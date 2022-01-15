@@ -56,7 +56,10 @@ namespace WebStore.Controllers
         [HttpGet]
         public IActionResult Login(string ReturnUrl)
         {
-            LoginViewModel model = new LoginViewModel();
+            LoginViewModel model = new LoginViewModel()
+            {
+                ReturnUrl = ReturnUrl
+            };
 
             return View(model);
         }
