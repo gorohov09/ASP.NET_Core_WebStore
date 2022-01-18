@@ -28,6 +28,8 @@ namespace WebStore.Services
 
             await InitializerProductAsync(cancel).ConfigureAwait(false);
 
+            await InitializeEmployeesAsync(cancel).ConfigureAwait(false);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
@@ -55,52 +57,70 @@ namespace WebStore.Services
 
             _Logger.LogInformation("Инициализация тестовых данных");
 
-            _Logger.LogInformation("Добавление секций");
+            var sections_pool = TestData.Sections.ToDictionary(s => s.Id);
+            var brands_pool = TestData.Brands.ToDictionary(b => b.Id);
 
-            //Делаем транзацию, чтобы добавлялись все секции/бренды/продукты
-            await using (await _db.Database.BeginTransactionAsync(cancel))
+            foreach (var child_section in TestData.Sections.Where(s => s.ParentId is not null))
             {
-                await _db.Sections.AddRangeAsync(TestData.Sections, cancel);
+                child_section.Parent = sections_pool[(int)child_section.ParentId!];
+            }
 
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] ON", cancel);
-                await _db.SaveChangesAsync(cancel);
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Sections] OFF", cancel);
+            foreach (var product in TestData.Products)
+            {
+                product.Section = sections_pool[product.SectionId];
+
+                if (product.BrandId is not null)
+                {
+                    product.Brand = brands_pool[(int)product.BrandId];
+                }
+
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = null;
+            }
+
+            foreach (var section in TestData.Sections)
+            {
+                section.Id = 0;
+                section.ParentId = null;
+            }
+
+            foreach (var brand in TestData.Brands)
+            {
+                brand.Id = 0;
+            }
+
+            await using( await _db.Database.BeginTransactionAsync(cancel))
+            {
+                await _db.AddRangeAsync(TestData.Sections, cancel);
+
+                await _db.AddRangeAsync(TestData.Brands, cancel);
+
+                await _db.AddRangeAsync(TestData.Products, cancel);
+
+                await _db.SaveChangesAsync();
 
                 await _db.Database.CommitTransactionAsync(cancel);
             }
 
-            _Logger.LogInformation("Добавление брендов");
-            await using (await _db.Database.BeginTransactionAsync(cancel))
+            _Logger.LogInformation("Инициализация тестовых данных выполнена успешно");
+        }
+
+        private async Task InitializeEmployeesAsync(CancellationToken cancel)
+        {
+            if (await _db.Employees.AnyAsync())
             {
-                await _db.Brands.AddRangeAsync(TestData.Brands, cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Brands] ON", cancel);
-                await _db.SaveChangesAsync(cancel);
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Brands] OFF", cancel);
-
-                await _db.Database.CommitTransactionAsync(cancel);
+                _Logger.LogInformation("Инициализация тестовых данных не требуется");
+                return;
             }
 
-            _Logger.LogInformation("Добавление продуктов");
-            await using (await _db.Database.BeginTransactionAsync(cancel))
+            await using (await _db.Database.BeginTransactionAsync())
             {
-                await _db.Products.AddRangeAsync(TestData.Products, cancel);
+                TestData.Employees.ForEach(emp => emp.Id = 0);
 
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Products] ON", cancel);
+                await _db.AddRangeAsync(TestData.Employees, cancel);
+
                 await _db.SaveChangesAsync(cancel);
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Products] OFF", cancel);
-
-                await _db.Database.CommitTransactionAsync(cancel);
-            }
-
-            _Logger.LogInformation("Добавление сотрудников");
-            await using (await _db.Database.BeginTransactionAsync(cancel))
-            {
-                await _db.Employees.AddRangeAsync(TestData.Employees, cancel);
-
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] ON", cancel);
-                await _db.SaveChangesAsync(cancel);
-                await _db.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [dbo].[Employees] OFF", cancel);
 
                 await _db.Database.CommitTransactionAsync(cancel);
             }
