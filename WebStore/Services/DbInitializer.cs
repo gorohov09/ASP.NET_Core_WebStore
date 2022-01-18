@@ -28,6 +28,8 @@ namespace WebStore.Services
 
             await InitializerProductAsync(cancel).ConfigureAwait(false);
 
+            await InitializeEmployeesAsync(cancel).ConfigureAwait(false);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
@@ -74,13 +76,13 @@ namespace WebStore.Services
 
                 product.Id = 0;
                 product.SectionId = 0;
-                product.BrandId = 0;
+                product.BrandId = null;
             }
 
             foreach (var section in TestData.Sections)
             {
                 section.Id = 0;
-                section.ParentId = 0;
+                section.ParentId = null;
             }
 
             foreach (var brand in TestData.Brands)

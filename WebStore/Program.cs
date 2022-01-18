@@ -68,7 +68,7 @@ var app = builder.Build(); //Сборка приложения
 await using(var scope = app.Services.CreateAsyncScope())
 {
     var db_initializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
-    await db_initializer.InitializeAsync();
+    await db_initializer.InitializeAsync(true);
 }
 
 //-----------------Конвейер обработки входного соединения---------------------------//
