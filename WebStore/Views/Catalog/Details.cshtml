@@ -60,7 +60,8 @@
 									<span>@Model.Price.ToString("C")</span>
 									<label>Количество:</label>
 									<input type="text" value="3" />
-									<button type="button" class="btn btn-default cart">
+									<button type="button" class="btn btn-default cart"
+										asp-controller="Cart" asp-action="Add" asp-route-Id="@Model.Id">
 										<i class="fa fa-shopping-cart"></i>
 										В корзину
 									</button>
@@ -74,7 +75,7 @@
 						</div>
 					</div><!--/product-details-->
 					
-					<div class="category-tab shop-details-tab"><!--category-tab-->
+@*					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">
 								<li><a href="#details" data-toggle="tab">Детали</a></li>
@@ -353,7 +354,7 @@
 								<i class="fa fa-angle-right"></i>
 							  </a>			
 						</div>
-					</div><!--/recommended_items-->
+					</div><!--/recommended_items-->*@
 					
 				</div>
 			</div>
