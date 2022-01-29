@@ -12,6 +12,11 @@ namespace WebStore.Services
             return TestData.Brands;
         }
 
+        public Product GetProductById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Product> GetProducts(ProductFilter? Filter = null)
         {
             IEnumerable<Product> query = TestData.Products;

@@ -1,4 +1,5 @@
-﻿using WebStore.DAL.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Services.Interfaces;
@@ -17,6 +18,16 @@ namespace WebStore.Services.InSQL
         public IEnumerable<Brand> GetBrands()
         {
             return _db.Brands;
+        }
+
+        public Product? GetProductById(int Id)
+        {
+            var product = _db.Products
+                .Include(p => p.Brand)
+                .Include(p => p.Section)
+                .FirstOrDefault(p => p.Id == Id);
+
+            return product;
         }
 
         public IEnumerable<Product> GetProducts(ProductFilter? Filter = null)
