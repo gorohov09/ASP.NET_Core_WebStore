@@ -16,6 +16,8 @@ namespace WebStore.Infrastructure.Mapping
                 Name = product.Name,
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
+                Section = product.Section.Name,
+                Brand = product.Brand.Name
             };
 
             return product_viewmodel;
