@@ -40,6 +40,8 @@ namespace WebStore.Controllers
 
             if (registration_result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, Role.Users).ConfigureAwait(true);
+
                 await _signInManager.SignInAsync(user, false);
 
                 return RedirectToAction("Index", "Home");

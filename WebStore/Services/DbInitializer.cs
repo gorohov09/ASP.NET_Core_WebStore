@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using WebStore.DAL.Context;
 using WebStore.Data;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Services.Interfaces;
 
 namespace WebStore.Services
@@ -11,10 +14,19 @@ namespace WebStore.Services
 
         private readonly ILogger<DbInitializer> _Logger;
 
-        public DbInitializer(WebStoreDB db, ILogger<DbInitializer> Logger)
+        private readonly UserManager<User> _UserManager;
+
+        private readonly RoleManager<Role> _RoleManager;
+
+        public DbInitializer(WebStoreDB db,
+            ILogger<DbInitializer> Logger,
+            UserManager<User> UserManager,
+            RoleManager<Role> RoleManager)
         {
             _db = db;
             _Logger = Logger;
+            _UserManager = UserManager;
+            _RoleManager = RoleManager;
         }
 
         public async Task InitializeAsync(bool RemoveBefore = false, CancellationToken cancel = default)
@@ -29,6 +41,8 @@ namespace WebStore.Services
             await InitializerProductAsync(cancel).ConfigureAwait(false);
 
             await InitializeEmployeesAsync(cancel).ConfigureAwait(false);
+
+            await InitializeIdentityAsync(cancel).ConfigureAwait(false);
 
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
@@ -126,6 +140,70 @@ namespace WebStore.Services
             }
 
             _Logger.LogInformation("Инициализация тестовых данных выполнена успешно");
+        }
+
+        private async Task InitializeIdentityAsync(CancellationToken cancel)
+        {
+            _Logger.LogInformation("Инициализация данных системы Identity");
+
+            var timer = Stopwatch.StartNew();
+
+            if (await _RoleManager.RoleExistsAsync(Role.Administrators))
+            {
+                _Logger.LogInformation($"Роль {Role.Administrators} существует в БД");
+            }
+            else
+            {
+                _Logger.LogInformation($"Роль {Role.Administrators} не существует в БД");
+
+                await _RoleManager.CreateAsync(new Role() { Name = Role.Administrators});
+
+                _Logger.LogInformation($"Роль {Role.Administrators} создана");
+            }
+
+            if (await _RoleManager.RoleExistsAsync(Role.Users))
+            {
+                _Logger.LogInformation($"Роль {Role.Users} существует в БД");
+            }
+            else
+            {
+                _Logger.LogInformation($"Роль {Role.Users} не существует в БД");
+
+                await _RoleManager.CreateAsync(new Role() { Name = Role.Users });
+
+                _Logger.LogInformation($"Роль {Role.Users} создана");
+            }
+
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
+            {
+                _Logger.LogInformation($"Пользователь {User.Administrator} отсутствует в БД");
+
+                var admin = new User()
+                {
+                    UserName = User.Administrator
+                };
+
+                var create_result = await _UserManager.CreateAsync(admin, User.DefaultAdminPassword);
+
+                if (create_result.Succeeded)
+                {
+                    _Logger.LogInformation($"Пользователь {User.Administrator} создан успешно");
+
+                    await _UserManager.AddToRoleAsync(admin, Role.Administrators);
+
+                    _Logger.LogInformation($"Пользователь {User.Administrator} к работе готов");
+                }
+                else
+                {
+                    var errors = create_result.Errors.Select(errors => errors.Description);
+
+                    _Logger.LogInformation($"Учетная запись администратора не создана. Ошибки: {string.Join(", ", errors)}");
+
+                    throw new InvalidOperationException($"Невозможно создать пользователя {User.Administrator} по причине: {string.Join(", ", errors)}");
+                }
+            }
+
+            _Logger.LogInformation($"Данная система Identity успешно добавлена в БД за {timer.Elapsed.TotalSeconds} c");
         }
     }
 }
