@@ -5,6 +5,7 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Services;
+using WebStore.Services.InCookies;
 using WebStore.Services.InSQL;
 using WebStore.Services.Interfaces;
 
@@ -21,6 +22,7 @@ services.AddDbContext<WebStoreDB>(opt =>
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
+services.AddScoped<ICartService, InCookiesCartService>();
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()

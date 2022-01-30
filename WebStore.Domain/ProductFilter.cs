@@ -11,5 +11,10 @@ namespace WebStore.Domain
         public int? SectionId { get; set; }
 
         public int? BrandId { get; set; }
+
+        /// <summary>
+        /// Идентификаторы товаров
+        /// </summary>
+        public int[]? Ids { get; set; }
     }
 }
