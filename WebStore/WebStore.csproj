@@ -23,6 +23,10 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\Admin\css\" />
+    <Folder Include="wwwroot\Admin\fonts\" />
+    <Folder Include="wwwroot\Admin\img\" />
+    <Folder Include="wwwroot\Admin\js\" />
   </ItemGroup>
 
 </Project>
