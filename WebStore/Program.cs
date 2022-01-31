@@ -94,10 +94,18 @@ app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
 
 app.UseWelcomePage("/welcome");
 
-//app.MapDefaultControllerRoute(); //Добавление маршрута по умолчанию
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(  //Добавили второй маршрут, который ведет в область
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "/{controller=Home}/{action=Index}/{id?}");
+    endpoints.MapControllerRoute( //Это основной маршрут, он должен быть самым последним, чтобы перехватить все вызовы,
+        name: "default",          //которые не попали в другие маршруты
+        pattern: "{controller=Home}/{action=Index}/{id?}"); 
+});
+
+//app.MapDefaultControllerRoute(); //Добавление маршрута по умолчанию
 
 app.Run(); //Запуск приложения
