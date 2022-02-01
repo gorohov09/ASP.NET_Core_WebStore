@@ -27,6 +27,28 @@ namespace WebStore.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new CreateProductViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateProductViewModel Model)
+        {
+            if (!ModelState.IsValid)
+                return View(Model);
+
+            var order = _ProductData.GetProducts().ToArray().Length + 1;
+
+            var product = _ProductData.CreateProduct(Model.Name, order, Model.Price, Model.ImageUrl, Model.Section, Model.Brand);
+
+            if (product is null)
+                return NotFound();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public IActionResult Edit(int Id)
         {
             var product = _ProductData.GetProductById(Id); //Получаем товар по идентификатору
@@ -61,19 +83,19 @@ namespace WebStore.Areas.Admin.Controllers
                 NotFound();
 
             //Копируем данные из модели в объект товара
-            //product.Name = Model.Name;
-            //product.Order = Model.Order;
-            //product.Price = Model.Price;
-            //product.ImageUrl = Model.ImageUrl;
+            product.Name = Model.Name;
+            product.Order = Model.Order;
+            product.Price = Model.Price;
+            product.ImageUrl = Model.ImageUrl;
 
-            //var brand = _ProductData.GetBrandById(Model.BrandId ?? -1);
-            //var section = _ProductData.GetSectionById(Model.SectionId);
+            var brand = _ProductData.GetBrandById(Model.BrandId ?? -1);
+            var section = _ProductData.GetSectionById(Model.SectionId);
 
-            //product.Brand = brand;
-            //product.Section = section;
+            product.Brand = brand;
+            product.Section = section;
 
-            //// отредактировать товар используя сервис productData
-            //_ProductData.Update(product);
+            // отредактировать товар используя сервис productData
+            _ProductData.Edit(product);
 
             return RedirectToAction(nameof(Index));
         }
@@ -110,7 +132,7 @@ namespace WebStore.Areas.Admin.Controllers
                 return NotFound();
 
             //Удалить product, используя сервис _ProductData
-            //_ProductData.Delete(product);
+            _ProductData.Delete(product.Id);
 
             return RedirectToAction(nameof(Index));
         }

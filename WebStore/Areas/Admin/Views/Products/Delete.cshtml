@@ -8,7 +8,7 @@
 
 <h3>Вы действительно хотите удалить этот товар?</h3>
 <div>
-    <h4>EditProductViewModel</h4>
+    <h4>Товар</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -69,6 +69,6 @@
     
     <form asp-action="DeleteConfirmed" asp-route-Id="@Model.Id">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index">Вернуться к списку товаров</a>
     </form>
 </div>

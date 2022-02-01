@@ -7,6 +7,26 @@ namespace WebStore.Services
 {
     public class InMemoryProductData : IProductData
     {
+        public Product CreateProduct(string Name, int Order, decimal Price, string ImageUrl, string Section, string? Brand = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Edit(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Brand? GetBrandById(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Brand> GetBrands()
         {
             return TestData.Brands;
@@ -28,6 +48,11 @@ namespace WebStore.Services
                 query = query.Where(p => p.BrandId == Filter.BrandId);
 
             return query;
+        }
+
+        public Section? GetSectionById(int Id)
+        {
+            throw new NotImplementedException();
         }
 
         public IEnumerable<Section> GetSections()
