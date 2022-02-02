@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebStore.Domain.Entities.Base;
 
 namespace WebStore.Domain.Entities.Orders
 {
-    public class OrderItem
+    public class OrderItem : Entity
     {
         [Required]
         public Product Product { get; set; }
