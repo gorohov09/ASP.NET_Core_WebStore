@@ -17,8 +17,24 @@ services.AddControllersWithViews(opt =>
     opt.Conventions.Add(new TestConvention()); //Добавление соглашения
 }); //Подключили(Добавили) MVC
 
-services.AddDbContext<WebStoreDB>(opt =>
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
+var database_type = builder.Configuration["Database"];
+
+switch (database_type)
+{
+    default: throw new InvalidOperationException($"Тип БД {database_type} не поддерживается");
+
+    case "SqlServer":
+        services.AddDbContext<WebStoreDB>(opt =>
+            opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
+        break;
+    case "Sqlite":
+        services.AddDbContext<WebStoreDB>(opt =>
+            opt.UseSqlite(builder.Configuration.GetConnectionString("Sqlite"),
+                o => o.MigrationsAssembly("WebStore.DAL.Sqlite")));
+        break;
+}
+
+
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
