@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Areas.Admin.ViewModels;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Mapping;
 using WebStore.Services.Interfaces;
@@ -25,6 +26,84 @@ namespace WebStore.Areas.Admin.Controllers
             var products = _ProductData.GetProducts().ToView();
 
             return View(products);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+            var product = _ProductData.GetProductById(Id);
+
+            if (product is null)
+                return NotFound();
+
+            var model = new EditProductViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                Section = product.Section.Name,
+                SectionId = product.SectionId,
+                BrandId = product.BrandId,
+                Brand = product.Brand.Name,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EditProductViewModel Model)
+        {
+            if (!ModelState.IsValid)
+                return View(Model);
+
+            var product = _ProductData.GetProductById(Model.Id);
+
+            if (product is null)
+                return NotFound();
+
+            //Копируем данные
+            product.Name = Model.Name;
+            product.ImageUrl = Model.ImageUrl;
+            product.Price = Model.Price;
+            product.Order = Model.Order;
+
+            //Находим бренд
+
+            //Редактируем товар
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int Id)
+        {
+            var product = _ProductData.GetProductById(Id);
+
+            if (product is null)
+                return NotFound();
+
+            var model = new EditProductViewModel()
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Order = product.Order,
+                Section = product.Section.Name,
+                SectionId = product.SectionId,
+                BrandId = product.BrandId,
+                Brand = product.Brand.Name,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteConfirmed(EditProductViewModel Model)
+        {
+            return RedirectToAction(nameof(Index));
         }
     }
 }
