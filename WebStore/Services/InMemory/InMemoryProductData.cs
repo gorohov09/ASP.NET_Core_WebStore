@@ -12,7 +12,7 @@ namespace WebStore.Services
             throw new NotImplementedException();
         }
 
-        public Brand? GetBrandById(int Id)
+        public Brand? GetBrandById(int? Id)
         {
             throw new NotImplementedException();
         }

@@ -53,7 +53,7 @@ namespace WebStore.Services.InSQL
             return product;
         }
 
-        public Brand? GetBrandById(int Id)
+        public Brand? GetBrandById(int? Id)
         {
             var brand = _db.Brands
                 .Include(b => b.Products)

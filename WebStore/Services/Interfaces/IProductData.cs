@@ -13,7 +13,7 @@ namespace WebStore.Services.Interfaces
 
         Product GetProductById(int Id);
 
-        Brand? GetBrandById(int Id);
+        Brand? GetBrandById(int? Id);
 
         Section GetSectionById(int Id);
 

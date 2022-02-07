@@ -69,7 +69,7 @@ namespace WebStore.Areas.Admin.Controllers
             product.Price = Model.Price;
             product.Order = Model.Order;
 
-            //Находим бренд
+            var brand = _ProductData.GetBrandById(product.BrandId);
 
             //Редактируем товар
 
