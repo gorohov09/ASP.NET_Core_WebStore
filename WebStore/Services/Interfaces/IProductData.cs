@@ -18,5 +18,9 @@ namespace WebStore.Services.Interfaces
         Section GetSectionById(int Id);
 
         Product CreateProduct(string Name, int Order, decimal Price, string ImageUrl, string Section, string? Brand = null);
+
+        bool Edit(Product product);
+
+        bool Delete(int Id);
     }
 }

@@ -12,6 +12,16 @@ namespace WebStore.Services
             throw new NotImplementedException();
         }
 
+        public bool Delete(int Id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Edit(Product product)
+        {
+            throw new NotImplementedException();
+        }
+
         public Brand? GetBrandById(int? Id)
         {
             throw new NotImplementedException();

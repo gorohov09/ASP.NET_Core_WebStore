@@ -53,6 +53,44 @@ namespace WebStore.Services.InSQL
             return product;
         }
 
+        public bool Delete(int Id)
+        {
+            var db_product = GetProductById(Id);
+
+            if (db_product is null)
+                return false;
+
+            _db.Remove(db_product);
+
+            _db.SaveChanges();
+
+            return true;
+        }
+
+        public bool Edit(Product product)
+        {
+            if (product is null)
+                throw new ArgumentException(nameof(product));
+
+            var db_product = GetProductById(product.Id);
+
+            if (db_product is null)
+                return false;
+
+            db_product.Name = product.Name;
+            db_product.Order = product.Order;
+            db_product.Section = product.Section;
+            db_product.Brand = product.Brand;
+            db_product.ImageUrl = product.ImageUrl;
+            db_product.Price = product.Price;
+            db_product.SectionId = product.SectionId;
+            db_product.BrandId = product.BrandId;
+
+            _db.SaveChanges();
+
+            return true;
+        }
+
         public Brand? GetBrandById(int? Id)
         {
             var brand = _db.Brands
@@ -112,5 +150,7 @@ namespace WebStore.Services.InSQL
         {
             return _db.Sections;
         }
+
+
     }
 }
