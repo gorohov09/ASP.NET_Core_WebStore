@@ -15,6 +15,53 @@ namespace WebStore.Services.InSQL
             _db = db;
         }
 
+        public Product CreateProduct(string Name, 
+            int Order, 
+            decimal Price, 
+            string ImageUrl, 
+            string Section, 
+            string? Brand = null)
+        {
+            var section = _db.Sections.FirstOrDefault(s => s.Name == Section);
+
+            if (section is null)
+            {
+                section = new Section() { Name = Name };
+            }
+
+            var brand = _db.Brands.FirstOrDefault(b => b.Name == Brand);
+
+            if (brand is null)
+            {
+                brand = new Brand() { Name = Name };
+            }
+
+            var product = new Product()
+            {
+                Name = Name,
+                Order = Order,
+                Price = Price,
+                ImageUrl = ImageUrl,
+                Section = section,
+                Brand = brand
+            };
+
+            _db.Products.Add(product);
+
+            _db.SaveChanges();
+
+            return product;
+        }
+
+        public Brand? GetBrandById(int Id)
+        {
+            var brand = _db.Brands
+                .Include(b => b.Products)
+                .FirstOrDefault(b => b.Id == Id);
+
+            return brand;
+        }
+
         public IEnumerable<Brand> GetBrands()
         {
             return _db.Brands;
@@ -50,6 +97,15 @@ namespace WebStore.Services.InSQL
 
             return query;
 
+        }
+
+        public Section GetSectionById(int Id)
+        {
+            var section = _db.Sections
+                .Include(s => s.Products)
+                .FirstOrDefault(s => s.Id == Id);
+
+            return section;
         }
 
         public IEnumerable<Section> GetSections()
