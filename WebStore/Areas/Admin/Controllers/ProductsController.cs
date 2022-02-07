@@ -69,9 +69,13 @@ namespace WebStore.Areas.Admin.Controllers
             product.Price = Model.Price;
             product.Order = Model.Order;
 
-            var brand = _ProductData.GetBrandById(product.BrandId);
+            var brand = _ProductData.GetBrandById(Model.BrandId ?? -1);
+            var section = _ProductData.GetSectionById(Model.SectionId);
 
-            //Редактируем товар
+            product.Brand = brand;
+            product.Section = section;
+
+            _ProductData.Edit(product);
 
             return RedirectToAction(nameof(Index));
         }
@@ -101,8 +105,15 @@ namespace WebStore.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteConfirmed(EditProductViewModel Model)
+        public IActionResult DeleteConfirmed(int Id)
         {
+            var product = _ProductData.GetProductById(Id);
+
+            if (product is null)
+                return NotFound();
+
+            _ProductData.Delete(product.Id);
+
             return RedirectToAction(nameof(Index));
         }
     }
