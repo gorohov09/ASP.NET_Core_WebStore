@@ -29,6 +29,28 @@ namespace WebStore.Areas.Admin.Controllers
         }
 
         [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new CreateProductViewModel());
+        }
+
+        [HttpPost]
+        public IActionResult Create(CreateProductViewModel Model)
+        {
+            if (!ModelState.IsValid)
+                return View(Model);
+
+            var order = _ProductData.GetProducts().ToArray().Length + 1;
+
+            var product = _ProductData.CreateProduct(Model.Name, order, Model.Price, Model.ImageUrl, Model.Section, Model.Brand);
+
+            if (product is null)
+                return NotFound();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpGet]
         public IActionResult Edit(int Id)
         {
             var product = _ProductData.GetProductById(Id);

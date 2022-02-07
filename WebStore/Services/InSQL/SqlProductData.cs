@@ -26,14 +26,14 @@ namespace WebStore.Services.InSQL
 
             if (section is null)
             {
-                section = new Section() { Name = Name };
+                section = new Section() { Name = Section };
             }
 
             var brand = _db.Brands.FirstOrDefault(b => b.Name == Brand);
 
             if (brand is null)
             {
-                brand = new Brand() { Name = Name };
+                brand = new Brand() { Name = Brand };
             }
 
             var product = new Product()
