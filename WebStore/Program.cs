@@ -23,6 +23,7 @@ services.AddTransient<IDbInitializer, DbInitializer>(); //ƒобавление сервиса дл€
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //ƒобавление нашего сервиса дл€ работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //ƒобавление сервиса дл€ работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
+services.AddScoped<IOrderService, SqlOrderService>();
 
 services.AddIdentity<User, Role>() //ƒобавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
