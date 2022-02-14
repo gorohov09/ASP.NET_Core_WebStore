@@ -23,6 +23,7 @@ services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
+services.AddScoped<IOrderService, SqlOrderService>();
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
@@ -94,10 +95,19 @@ app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
 
 app.UseWelcomePage("/welcome");
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "areas",
+        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "/{controller=Home}/{action=Index}/{id?}");
+});
+
 //app.MapDefaultControllerRoute(); //Добавление маршрута по умолчанию
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "/{controller=Home}/{action=Index}/{id?}");
 
 app.Run(); //Запуск приложения

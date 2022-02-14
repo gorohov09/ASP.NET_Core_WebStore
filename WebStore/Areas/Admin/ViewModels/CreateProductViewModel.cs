@@ -1,13 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace WebStore.ViewModels
+namespace WebStore.Areas.Admin.ViewModels
 {
-    public class ProductViewModel
+    public class CreateProductViewModel
     {
-        public int Id { get; set; }
-
-        [Display(Name = "Имя товара")]
+        [Display(Name = "Имя")]
         public string Name { get; set; }
+
+        [HiddenInput]
+        public int Order { get; set; }
 
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
@@ -16,7 +18,7 @@ namespace WebStore.ViewModels
         public string ImageUrl { get; set; }
 
         [Display(Name = "Бренд")]
-        public string? Brand { get; set; }
+        public string Brand { get; set; }
 
         [Display(Name = "Категория")]
         public string Section { get; set; }

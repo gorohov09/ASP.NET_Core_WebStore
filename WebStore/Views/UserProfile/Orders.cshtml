@@ -1,0 +1,33 @@
+﻿@model IEnumerable<UserOrderViewModel>
+
+@{
+    ViewBag.Title = "Заказы пользователя";
+    Layout = "_UserProfileLayout";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Дата</th>
+            <th>Адрес</th>
+            <th>Телефон</th>
+            <th>Сумма</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    @{
+        int i = 1;
+    }
+    @foreach (var item in Model!)
+    {
+        <tr>
+            <td>@(i++)</td>
+            <td>@item.Date</td>
+            <td>@item.Address</td>
+            <td>@item.Phone</td>
+            <td>@item.TotalPrice</td>
+            <td>@item.Description</td>
+        </tr>
+    }
+</table>
