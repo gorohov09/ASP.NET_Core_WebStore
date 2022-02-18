@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebStore.Interfaces.TestAPI;
+using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Values
 {
-    public class ValuesClient : IValuesService
+    public class ValuesClient : BaseClient, IValuesService
     {
-        private HttpClient _Client;
+        public ValuesClient(HttpClient Client) : base(Client, "api/values")
+        {
+
+        }
+
         public void Add(string Value)
         {
             throw new NotImplementedException();
