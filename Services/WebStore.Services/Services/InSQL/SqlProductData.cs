@@ -2,9 +2,9 @@
 using WebStore.DAL.Context;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
 
-namespace WebStore.Services.InSQL
+namespace WebStore.Services.Services.InSQL
 {
     public class SqlProductData : IProductData
     {
@@ -15,11 +15,11 @@ namespace WebStore.Services.InSQL
             _db = db;
         }
 
-        public Product CreateProduct(string Name, 
-            int Order, 
-            decimal Price, 
-            string ImageUrl, 
-            string Section, 
+        public Product CreateProduct(string Name,
+            int Order,
+            decimal Price,
+            string ImageUrl,
+            string Section,
             string? Brand = null)
         {
             var section = _db.Sections.FirstOrDefault(s => s.Name == Section);

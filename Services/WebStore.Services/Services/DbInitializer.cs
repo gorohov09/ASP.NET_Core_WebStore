@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using WebStore.DAL.Context;
-using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
 
-namespace WebStore.Services
+namespace WebStore.Services.Services
 {
     public class DbInitializer : IDbInitializer
     {
@@ -104,7 +105,7 @@ namespace WebStore.Services
                 brand.Id = 0;
             }
 
-            await using( await _db.Database.BeginTransactionAsync(cancel))
+            await using (await _db.Database.BeginTransactionAsync(cancel))
             {
                 await _db.AddRangeAsync(TestData.Sections, cancel);
 
@@ -156,7 +157,7 @@ namespace WebStore.Services
             {
                 _Logger.LogInformation($"Роль {Role.Administrators} не существует в БД");
 
-                await _RoleManager.CreateAsync(new Role() { Name = Role.Administrators});
+                await _RoleManager.CreateAsync(new Role() { Name = Role.Administrators });
 
                 _Logger.LogInformation($"Роль {Role.Administrators} создана");
             }

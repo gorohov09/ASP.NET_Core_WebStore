@@ -1,19 +1,21 @@
-﻿using WebStore.DAL.Context;
+﻿using Microsoft.Extensions.Logging;
 using WebStore.Domain.Entities;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Data;
 
-namespace WebStore.Services.InSQL
+namespace WebStore.Services.Services.InMemory
 {
-    public class SqlEmployeesData : IEmployeesData
+    public class InMemoryEmployeesData : IEmployeesData
     {
-        private readonly WebStoreDB _db;
+        private readonly ILogger<InMemoryEmployeesData> _Logger;
+        private ICollection<Employee> _Employees;
+        private int _MaxFreeId;
 
-        private readonly ILogger<SqlEmployeesData> _Logger;
-
-        public SqlEmployeesData(WebStoreDB db, ILogger<SqlEmployeesData> Logger)
+        public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> Logger)
         {
-            _db = db;
             _Logger = Logger;
+            _Employees = TestData.Employees;
+            _MaxFreeId = _Employees.DefaultIfEmpty().Max(e => e?.Id ?? 0) + 1;
         }
 
         public int Add(Employee employee)
@@ -21,12 +23,11 @@ namespace WebStore.Services.InSQL
             if (employee == null)
                 throw new ArgumentException(nameof(employee));
 
-            if (_db.Employees.Contains(employee))
+            if (_Employees.Contains(employee))
                 return employee.Id;
 
-            _db.Employees.Add(employee);
-
-            _db.SaveChanges();
+            employee.Id = _MaxFreeId++;
+            _Employees.Add(employee);
 
             return employee.Id;
         }
@@ -40,9 +41,7 @@ namespace WebStore.Services.InSQL
                 return false;
             }
 
-            _db.Employees.Remove(employee);
-
-            _db.SaveChanges();
+            _Employees.Remove(employee);
 
             _Logger.LogInformation("Сотруднике с id:{0} был успешно удален", employee.Id);
 
@@ -54,8 +53,8 @@ namespace WebStore.Services.InSQL
             if (employee == null)
                 throw new ArgumentException(nameof(employee));
 
-            //if (_db.Employees.Contains(employee))
-            //    return true;
+            if (_Employees.Contains(employee))
+                return true;
 
             var db_employee = GetById(employee.Id);
 
@@ -73,8 +72,6 @@ namespace WebStore.Services.InSQL
             db_employee.Birthday = employee.Birthday;
             db_employee.Salary = employee.Salary;
 
-            _db.SaveChanges();
-
             _Logger.LogInformation("Информация о сотруднике id:{0} была изменена", employee.Id);
 
             return true;
@@ -82,12 +79,12 @@ namespace WebStore.Services.InSQL
 
         public IEnumerable<Employee> GetAll()
         {
-            return _db.Employees;
+            return _Employees;
         }
 
         public Employee? GetById(int id)
         {
-            return _db.Employees.FirstOrDefault(emp => emp.Id == id);
+            return _Employees.FirstOrDefault(emp => emp.Id == id);
         }
     }
 }

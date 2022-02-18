@@ -1,10 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Mapping;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
+using WebStore.Services.Mapping;
 using WebStore.ViewModels;
 
-namespace WebStore.Services.InCookies
+namespace WebStore.Services.Services.InCookies
 {
     public class InCookiesCartService : ICartService
     {
@@ -34,7 +35,7 @@ namespace WebStore.Services.InCookies
                 }
 
                 ReplaceCart(cookies, cart_cookies); //Заменяем корзину
-                
+
                 return JsonConvert.DeserializeObject<Cart>(cart_cookies)!; //Десериализуем ее из строки
             }
             set //Сериализовать cart в json и добавить в cookies

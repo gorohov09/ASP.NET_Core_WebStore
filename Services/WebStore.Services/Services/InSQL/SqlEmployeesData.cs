@@ -1,20 +1,20 @@
-﻿using WebStore.Data;
+﻿using Microsoft.Extensions.Logging;
+using WebStore.DAL.Context;
 using WebStore.Domain.Entities;
-using WebStore.Services.Interfaces;
+using WebStore.Interfaces.Services;
 
-namespace WebStore.Services
+namespace WebStore.Services.Services.InSQL
 {
-    public class InMemoryEmployeesData : IEmployeesData
+    public class SqlEmployeesData : IEmployeesData
     {
-        private readonly ILogger<InMemoryEmployeesData> _Logger;
-        private ICollection<Employee> _Employees;
-        private int _MaxFreeId;
+        private readonly WebStoreDB _db;
 
-        public InMemoryEmployeesData(ILogger<InMemoryEmployeesData> Logger)
+        private readonly ILogger<SqlEmployeesData> _Logger;
+
+        public SqlEmployeesData(WebStoreDB db, ILogger<SqlEmployeesData> Logger)
         {
+            _db = db;
             _Logger = Logger;
-            _Employees = TestData.Employees;
-            _MaxFreeId = _Employees.DefaultIfEmpty().Max(e => e?.Id ?? 0) + 1;
         }
 
         public int Add(Employee employee)
@@ -22,11 +22,12 @@ namespace WebStore.Services
             if (employee == null)
                 throw new ArgumentException(nameof(employee));
 
-            if (_Employees.Contains(employee))
+            if (_db.Employees.Contains(employee))
                 return employee.Id;
 
-            employee.Id = _MaxFreeId++;
-            _Employees.Add(employee);
+            _db.Employees.Add(employee);
+
+            _db.SaveChanges();
 
             return employee.Id;
         }
@@ -39,8 +40,10 @@ namespace WebStore.Services
                 _Logger.LogWarning("Попытка удаления отсутсвующего сотрудника с Id:{0}", employee.Id);
                 return false;
             }
-                
-            _Employees.Remove(employee);
+
+            _db.Employees.Remove(employee);
+
+            _db.SaveChanges();
 
             _Logger.LogInformation("Сотруднике с id:{0} был успешно удален", employee.Id);
 
@@ -52,8 +55,8 @@ namespace WebStore.Services
             if (employee == null)
                 throw new ArgumentException(nameof(employee));
 
-            if (_Employees.Contains(employee))
-                return true;
+            //if (_db.Employees.Contains(employee))
+            //    return true;
 
             var db_employee = GetById(employee.Id);
 
@@ -62,7 +65,7 @@ namespace WebStore.Services
                 _Logger.LogWarning("Попытка редактирования отсутсвующего сотрудника с Id:{0}", employee.Id);
                 return false;
             }
-               
+
 
             db_employee.FirstName = employee.FirstName;
             db_employee.LastName = employee.LastName;
@@ -71,6 +74,8 @@ namespace WebStore.Services
             db_employee.Birthday = employee.Birthday;
             db_employee.Salary = employee.Salary;
 
+            _db.SaveChanges();
+
             _Logger.LogInformation("Информация о сотруднике id:{0} была изменена", employee.Id);
 
             return true;
@@ -78,12 +83,12 @@ namespace WebStore.Services
 
         public IEnumerable<Employee> GetAll()
         {
-            return _Employees;
+            return _db.Employees;
         }
 
         public Employee? GetById(int id)
         {
-            return _Employees.FirstOrDefault(emp => emp.Id == id);
+            return _db.Employees.FirstOrDefault(emp => emp.Id == id);
         }
     }
 }

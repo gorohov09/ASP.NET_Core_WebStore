@@ -1,10 +1,10 @@
 ﻿using WebStore.Domain.Entities;
 
-namespace WebStore.Data
+namespace WebStore.Services.Data
 {
     public static class TestData
     {
-        public static List<Employee> Employees { get;  } = new List<Employee>()
+        public static List<Employee> Employees { get; } = new List<Employee>()
         {
             new Employee() {Id = 1, LastName = "Иванов", FirstName = "Иван", Patronymic = "Иванович", Age = 27, Birthday = new DateTime(1996, 12 ,2), Salary = 50000},
             new Employee() {Id = 2, LastName = "Максимов", FirstName = "Максим", Patronymic = "Максимович", Age = 28, Birthday = new DateTime(1997, 4, 1), Salary = 60000},
