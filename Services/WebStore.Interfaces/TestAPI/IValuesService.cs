@@ -10,7 +10,7 @@ namespace WebStore.Interfaces.TestAPI
     {
         IEnumerable<string> GetValues();
 
-        string GetById(int Id);
+        string? GetById(int Id);
 
         int Count();
 
