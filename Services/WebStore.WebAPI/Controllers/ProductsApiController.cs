@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
 using WebStore.Domain.DTO;
+using WebStore.Domain.DTO.Mapper;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 
@@ -22,14 +23,14 @@ namespace WebStore.WebAPI.Controllers
         public IActionResult GetSections()
         {
             var sections = _ProductData.GetSections();
-            return Ok(sections);
+            return Ok(sections.ToDTO());
         }
 
         [HttpGet("brands")]
         public IActionResult GetBrands()
         {
             var brands = _ProductData.GetBrands();
-            return Ok(brands);
+            return Ok(brands.ToDTO());
         }
 
         [HttpGet("sections/{Id}")]
@@ -38,7 +39,7 @@ namespace WebStore.WebAPI.Controllers
             var section = _ProductData.GetSectionById(Id);
             if (section is null)
                 return NotFound();
-            return Ok(section);
+            return Ok(section.ToDTO());
         }
 
         [HttpGet("brands/{Id}")]
@@ -47,14 +48,14 @@ namespace WebStore.WebAPI.Controllers
             var brand = _ProductData.GetBrandById(Id);
             if (brand is null)
                 return NotFound();
-            return Ok(brand);
+            return Ok(brand.ToDTO());
         }
 
         [HttpPost]
         public IActionResult GetProducts(ProductFilter? Filter = null)
         {
             var products = _ProductData.GetProducts(Filter);
-            return Ok(products);
+            return Ok(products.ToDTO());
         }
 
         [HttpGet("{Id}")]
@@ -65,7 +66,7 @@ namespace WebStore.WebAPI.Controllers
             if (product is null)
                 return NotFound();
 
-            return Ok(product);
+            return Ok(product.ToDTO());
         }
 
         [HttpPost("new/{Name}")]
@@ -74,7 +75,7 @@ namespace WebStore.WebAPI.Controllers
             var product = _ProductData.CreateProduct(productDTO.Name, productDTO.Order, productDTO.Price, 
                 productDTO.ImageUrl, productDTO.Section, productDTO.Brand);
 
-            return CreatedAtAction(nameof(GetProductById), new { product.Id }, product);
+            return CreatedAtAction(nameof(GetProductById), new { product.Id }, product.ToDTO());
         }
 
         [HttpPut]
