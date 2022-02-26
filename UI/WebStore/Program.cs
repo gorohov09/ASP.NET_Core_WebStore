@@ -30,10 +30,17 @@ services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для
 services.AddScoped<ICartService, InCookiesCartService>();
 //services.AddScoped<IOrderService, SqlOrderService>();
 
-services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
-services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
-services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
-services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+//services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+//services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+//services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+//services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+
+//Более красивый способ регистрации клиентов
+services.AddHttpClient("WebStoreAPI", client => client.BaseAddress = new(builder.Configuration["WebAPI"]))
+    .AddTypedClient<IValuesService, ValuesClient>()
+    .AddTypedClient<IEmployeesData, EmployeesClient>()
+    .AddTypedClient<IProductData, ProductsClient>()
+    .AddTypedClient<IOrderService, OrdersClient>();
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
