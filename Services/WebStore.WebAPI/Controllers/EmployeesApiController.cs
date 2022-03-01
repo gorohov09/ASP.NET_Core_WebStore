@@ -46,11 +46,11 @@ namespace WebStore.WebAPI.Controllers
         [HttpPut]
         public IActionResult Edit(Employee employee)
         {
-            _EmployeesData.Edit(employee);
-            return Ok();
+            var success = _EmployeesData.Edit(employee);
+            return Ok(success);
         }
 
-        [HttpDelete]
+        [HttpDelete("{Id}")]
         public IActionResult Delete(int id)
         {
             var result = _EmployeesData.Delete(id);
