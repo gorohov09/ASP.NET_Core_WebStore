@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.DTO.Employees;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 
@@ -21,7 +22,7 @@ namespace WebStore.WebAPI.Controllers
         {
             var employees = _EmployeesData.GetAll();
 
-            return Ok(employees);
+            return Ok(employees.ToDTO());
         }
 
         [HttpGet("{Id}")]
@@ -32,21 +33,21 @@ namespace WebStore.WebAPI.Controllers
             if (employee is null)
                 return NotFound();
 
-            return Ok(employee);
+            return Ok(employee.ToDTO());
         }
 
         [HttpPost]
-        public IActionResult Add(Employee employee)
+        public IActionResult Add(EmployeeDTO employee)
         {
-            var id = _EmployeesData.Add(employee);
+            var id = _EmployeesData.Add(employee.FromDTO());
 
             return CreatedAtAction(nameof(GetById), new { id }, employee);
         }
 
         [HttpPut]
-        public IActionResult Edit(Employee employee)
+        public IActionResult Edit(EmployeeDTO employee)
         {
-            var success = _EmployeesData.Edit(employee);
+            var success = _EmployeesData.Edit(employee.FromDTO());
             return Ok(success);
         }
 

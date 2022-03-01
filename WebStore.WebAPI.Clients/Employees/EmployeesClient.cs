@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using WebStore.Domain.DTO.Employees;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces.Services;
 using WebStore.WebAPI.Clients.Base;
@@ -19,8 +20,8 @@ namespace WebStore.WebAPI.Clients.Employees
 
         public int Add(Employee employee)
         {
-            var response = Post(Address, employee);
-            var added_employee = response?.Content.ReadFromJsonAsync<Employee>().Result;
+            var response = Post(Address, employee.ToDTO());
+            var added_employee = response?.Content.ReadFromJsonAsync<EmployeeDTO>().Result;
 
             if (added_employee is null)
                 return -1;
@@ -41,7 +42,7 @@ namespace WebStore.WebAPI.Clients.Employees
 
         public bool Edit(Employee employee)
         {
-            var response = Put(Address, employee);
+            var response = Put(Address, employee.ToDTO());
 
             var success = response
                 .EnsureSuccessStatusCode()
@@ -54,14 +55,14 @@ namespace WebStore.WebAPI.Clients.Employees
 
         public IEnumerable<Employee> GetAll()
         {
-            var employess = Get<IEnumerable<Employee>>(Address);
-            return employess!;
+            var employess = Get<IEnumerable<EmployeeDTO>>(Address);
+            return employess.FromDTO()!;
         }
 
         public Employee? GetById(int id)
         {
-            var employee = Get<Employee>($"{Address}/{id}");
-            return employee;
+            var employee = Get<EmployeeDTO>($"{Address}/{id}");
+            return employee.FromDTO();
         }
     }
 }
