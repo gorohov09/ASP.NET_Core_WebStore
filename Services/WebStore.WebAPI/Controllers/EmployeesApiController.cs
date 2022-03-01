@@ -51,9 +51,9 @@ namespace WebStore.WebAPI.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int Id)
         {
-            var result = _EmployeesData.Delete(id);
+            var result = _EmployeesData.Delete(Id);
 
             return result 
                 ? Ok(true)
