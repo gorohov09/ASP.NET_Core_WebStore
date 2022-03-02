@@ -10,6 +10,7 @@ using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
@@ -24,12 +25,13 @@ services.AddDbContext<WebStoreDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
 //services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
-services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
+//services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
 services.AddHttpClient<IValuesService, ValuesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
 
 services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
+services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(builder.Configuration["WebAPI"]));
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
