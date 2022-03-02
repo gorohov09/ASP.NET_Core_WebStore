@@ -44,7 +44,7 @@ namespace WebStore.WebAPI.Clients.Products
 
         public bool Edit(Product product)
         {
-            var response = Put(Address, product);
+            var response = Put(Address, product.ToDTO());
             var success = response.Content.ReadFromJsonAsync<bool>().Result;
             return success;
         }
