@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Services\WebStore.Interfaces\WebStore.Interfaces.csproj" />
+    <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>
