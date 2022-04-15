@@ -1,9 +1,15 @@
 ﻿using WebStore.Interfaces;
+using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Values
 {
-    public class ValuesClient : IValueService
+    public class ValuesClient : BaseClient, IValueService
     {
+        public ValuesClient(HttpClient Client) : 
+            base(Client, "api/values")
+        {
+
+        }
         public void Add(string Value)
         {
             throw new NotImplementedException();
