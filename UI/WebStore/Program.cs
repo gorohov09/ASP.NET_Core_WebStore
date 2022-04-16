@@ -24,6 +24,7 @@ services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего серв
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
+services.AddScoped<IUserService, SqlUserService>();
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
