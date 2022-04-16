@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
 using WebStore.ViewModels;
 
@@ -28,6 +29,26 @@ namespace WebStore.Controllers
             });
 
             return View(orders_model);
+        }
+
+        public async Task<IActionResult> Profile([FromServices] IUserService UserService)
+        {
+            var login = User.Identity.Name;
+
+            var user = await UserService.GetByLogin(login);
+
+            if (user is null)
+                return NotFound();
+
+            return View(new UserProfileViewModel
+            {
+                LastName = user.LastName,
+                FirstName = user.FirstName,
+                Birthday = user.Birthday,
+                Email = user.Email,
+                Phone = user.PhoneNumber,
+                AboutMySelf = user.AboutMySelf,
+            });
         }
     }
 }

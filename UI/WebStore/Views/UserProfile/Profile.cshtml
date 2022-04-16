@@ -1,0 +1,59 @@
+﻿@model WebStore.Domain.ViewModels.UserProfileViewModel
+
+@{
+    ViewBag.Title = "Информация о пользователе";
+    Layout = "_UserProfileLayout";
+}
+
+<h1>Личная информация</h1>
+
+<div>
+    <h4>@User.Identity.Name</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <hr />
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <hr />
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.Birthday)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Birthday)
+        </dd>
+        <hr />
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <hr />
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+        <hr />
+        <dt class = "col-sm-10">
+            @Html.DisplayNameFor(model => model.AboutMySelf)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AboutMySelf)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">В профиль</a>
+</div>

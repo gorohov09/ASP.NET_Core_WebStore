@@ -15,6 +15,21 @@
 						<form asp-action="Register" asp-antiforgery="true">
 							<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 							
+							<input asp-for="LastName" placeholder="Фамилия"/>
+							<span asp-validation-for="LastName" class="text-danger"></span>
+
+							<input asp-for="FirstName" placeholder="Имя"/>
+							<span asp-validation-for="FirstName" class="text-danger"></span>
+
+							<input asp-for="Birthday" placeholder="Дата Рождения"/>
+							<span asp-validation-for="Birthday" class="text-danger"></span>
+
+							<input asp-for="Email" placeholder="e-mail"/>
+							<span asp-validation-for="Email" class="text-danger"></span>
+
+							<input asp-for="Phone" placeholder="Номер телефона"/>
+							<span asp-validation-for="Phone" class="text-danger"></span>
+
 							<input asp-for="UserName" placeholder="Логин"/>
 							<span asp-validation-for="UserName" class="text-danger"></span>
 
@@ -23,6 +38,9 @@
 
 							<input asp-for="PasswordConfirm" placeholder="Потверждение пароля"/>
 							<span asp-validation-for="PasswordConfirm" class="text-danger"></span>
+
+							<input asp-for="AboutMySelf" placeholder="О себе"/>
+							<span asp-validation-for="AboutMySelf" class="text-danger"></span>
 
 							<button type="submit" class="btn btn-default">Зарегистрироваться</button>
 
