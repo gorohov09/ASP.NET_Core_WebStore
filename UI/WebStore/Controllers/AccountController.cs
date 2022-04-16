@@ -34,6 +34,11 @@ namespace WebStore.Controllers
             var user = new User()
             {
                 UserName = model.UserName,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                Birthday = model.Birthday,
+                AboutMySelf = model.AboutMySelf,
             };
 
             var registration_result = await _userManager.CreateAsync(user, model.Password).ConfigureAwait(true);
