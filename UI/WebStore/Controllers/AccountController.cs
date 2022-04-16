@@ -37,6 +37,7 @@ namespace WebStore.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+                PhoneNumber = model.Phone,
                 Birthday = model.Birthday,
                 AboutMySelf = model.AboutMySelf,
             };
