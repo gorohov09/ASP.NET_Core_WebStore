@@ -4,10 +4,12 @@ using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
 
@@ -24,6 +26,9 @@ services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего серв
 services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IOrderService, SqlOrderService>();
+
+var configuration = builder.Configuration;
+services.AddHttpClient<IValueService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
