@@ -9,6 +9,12 @@ namespace WebStore.Domain.Entities.Identity
 
         public const string DefaultAdminPassword = "AdPAss_123";
 
+        public string LastName { get; set; }
+
+        public string FirstName { get; set; }
+
+        public DateTime Birthday { get; set; }
+
         public string? AboutMySelf { get; set; }
     }
 }
