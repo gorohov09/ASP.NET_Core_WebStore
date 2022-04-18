@@ -2,7 +2,7 @@
 
 namespace WebStore.Interfaces
 {
-    public interface IPersonService
+    public interface IPersonsService
     {
         Task<IEnumerable<Person>> GetPersons();
 

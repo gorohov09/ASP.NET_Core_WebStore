@@ -10,7 +10,7 @@ using WebStore.WebAPI.Clients.Base;
 
 namespace WebStore.WebAPI.Clients.Test.Persons
 {
-    public class PersonsClient : BaseClient, IPersonService
+    public class PersonsClient : BaseClient, IPersonsService
     {
         public PersonsClient(HttpClient Client) :
             base(Client, "api/person")
