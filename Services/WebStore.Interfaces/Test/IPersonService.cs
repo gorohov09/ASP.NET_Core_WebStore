@@ -4,14 +4,14 @@ namespace WebStore.Interfaces
 {
     public interface IPersonService
     {
-        IEnumerable<Person> GetPersons();
+        Task<IEnumerable<Person>> GetPersons();
 
-        int Count();
+        Task<int> Count();
 
-        Person? GetById(int Id);
+        Task<Person?> GetById(int Id);
 
-        bool Delete(int Id);
+        Task<bool> Delete(int Id);
 
-        void Add(Person person);
+        Task Add(Person person);
     }
 }

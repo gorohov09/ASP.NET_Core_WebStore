@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebStore.Domain.Entities;
@@ -17,27 +18,27 @@ namespace WebStore.WebAPI.Clients.Test.Persons
 
         }
 
-        public void Add(Person person)
+        public async Task IPersonService.Add(Person person)
+        {
+            
+        }
+
+        Task<int> IPersonService.Count()
         {
             throw new NotImplementedException();
         }
 
-        public int Count()
+        Task<bool> IPersonService.Delete(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public bool Delete(int Id)
+        Task<Person?> IPersonService.GetById(int Id)
         {
             throw new NotImplementedException();
         }
 
-        public Person? GetById(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Person> GetPersons()
+        Task<IEnumerable<Person>> IPersonService.GetPersons()
         {
             throw new NotImplementedException();
         }
