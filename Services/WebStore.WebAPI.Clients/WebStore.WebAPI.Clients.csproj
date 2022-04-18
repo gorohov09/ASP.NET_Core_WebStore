@@ -15,8 +15,4 @@
     <ProjectReference Include="..\WebStore.Interfaces\WebStore.Interfaces.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Test\Person\" />
-  </ItemGroup>
-
 </Project>

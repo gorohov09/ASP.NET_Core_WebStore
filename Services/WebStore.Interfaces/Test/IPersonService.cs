@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebStore.Domain.Entities;
+﻿using WebStore.Domain.Entities;
 
 namespace WebStore.Interfaces
 {
@@ -15,8 +10,8 @@ namespace WebStore.Interfaces
 
         Person? GetById(int Id);
 
-        void Add(Person person);
-
         bool Delete(int Id);
+
+        void Add(Person person);
     }
 }
