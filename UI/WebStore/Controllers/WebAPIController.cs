@@ -7,16 +7,20 @@ namespace WebStore.Controllers
     {
         private readonly IValueService _ValuesService;
 
-        public WebAPIController(IValueService ValueService)
+        private readonly IPersonsService _PersonsService;
+
+        public WebAPIController(IValueService ValueService, IPersonsService PersonsService)
         {
             _ValuesService = ValueService;
+            _PersonsService = PersonsService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var values = _ValuesService.GetValues();
+            //var values = _ValuesService.GetValues();
+            var persons = await _PersonsService.GetPersons();
 
-            return View(values);
+            return View(persons);
         }
     }
 }
