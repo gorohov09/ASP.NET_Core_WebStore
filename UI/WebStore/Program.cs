@@ -9,6 +9,7 @@ using WebStore.Interfaces.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Test.Persons;
 using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
@@ -29,6 +30,7 @@ services.AddScoped<IOrderService, SqlOrderService>();
 
 var configuration = builder.Configuration;
 services.AddHttpClient<IValueService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IPersonsService, PersonsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
