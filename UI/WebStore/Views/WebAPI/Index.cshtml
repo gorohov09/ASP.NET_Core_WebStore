@@ -1,0 +1,59 @@
+﻿@*@model IEnumerable<string>
+@{
+    ViewBag.Title = "Тестовое WebAPI";
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{var i = 1;}
+            @foreach(var value in Model)
+            {
+                <tr>
+                    <th>@(i++)</th>
+                    <th>@value</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>*@
+
+@model IEnumerable<Person>
+
+@{
+    ViewBag.Title = "Тестовое WebAPI";
+}
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>LastName</th>
+                <th>LastName</th>
+                <th>Age</th>
+                <th>Salary</th>
+                <th>Birthday</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var person in Model)
+            {
+                <tr>
+                    <th>@person.Id</th>
+                    <th>@person.LastName</th>
+                    <th>@person.FirstName</th>
+                    <th>@person.Age</th>
+                    <th>@person.Salary</th>
+                    <th>@person.Birthday</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
