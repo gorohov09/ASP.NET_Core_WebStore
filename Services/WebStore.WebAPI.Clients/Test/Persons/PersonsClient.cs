@@ -18,29 +18,46 @@ namespace WebStore.WebAPI.Clients.Test.Persons
 
         }
 
-        public async Task IPersonService.Add(Person person)
+        public async Task Add(Person person)
         {
-            
+            var response = await Http.PostAsJsonAsync(Address, person);
+            response.EnsureSuccessStatusCode();
         }
 
-        Task<int> IPersonService.Count()
+        public async Task<int> Count()
         {
-            throw new NotImplementedException();
+            var response = await Http.GetAsync($"{Address}/count");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<int>();
+
+            return -1;
         }
 
-        Task<bool> IPersonService.Delete(int Id)
+        public async Task<bool> Delete(int Id)
         {
-            throw new NotImplementedException();
+            var response = await Http.DeleteAsync($"{Address}/{Id}");
+            return response.IsSuccessStatusCode;
         }
 
-        Task<Person?> IPersonService.GetById(int Id)
+        public async Task<Person?> GetById(int Id)
         {
-            throw new NotImplementedException();
+            var response = await Http.GetAsync($"{Address}/{Id}");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<Person>();
+
+            return null;
         }
 
-        Task<IEnumerable<Person>> IPersonService.GetPersons()
+        public async Task<IEnumerable<Person>> GetPersons()
         {
-            throw new NotImplementedException();
+            var response = await Http.GetAsync(Address);
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<IEnumerable<Person>>();
+
+            return null;
         }
     }
 }
