@@ -44,8 +44,8 @@ namespace WebStore.WebAPI.Clients.Base
             return response.EnsureSuccessStatusCode();
         }
 
-        protected HttpResponseMessage Delete(string url) => DeleteAsync(url).Result;
-        protected async Task<HttpResponseMessage> DeleteAsync(string url)
+        protected HttpResponseMessage? Delete(string url) => DeleteAsync(url).Result;
+        protected async Task<HttpResponseMessage?> DeleteAsync(string url)
         {
             var response = await Http.DeleteAsync(url).ConfigureAwait(false);
             return response;
