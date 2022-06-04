@@ -18,42 +18,42 @@ namespace WebStore.WebAPI.Controllers
         public IActionResult GetSections()
         {
             var sections = _ProductData.GetSections();
-            return Ok(sections);
+            return Ok(sections.ToDTO());
         }
 
         [HttpGet("brands")]
         public IActionResult GetBrands()
         {
             var brands = _ProductData.GetBrands();
-            return Ok(brands);
+            return Ok(brands.ToDTO());
         }
 
         [HttpGet("sections/{Id}")]
         public IActionResult GetSectionById(int Id)
         {
             var section = _ProductData.GetSectionById(Id);
-            return section == null ? NotFound() : Ok(section); 
+            return section == null ? NotFound() : Ok(section.ToDTO()); 
         }
 
         [HttpGet("brands/{Id}")]
         public IActionResult GetBrandById(int Id)
         {
             var brand = _ProductData.GetBrandById(Id);
-            return brand == null ? NotFound() : Ok(brand);  
+            return brand == null ? NotFound() : Ok(brand.ToDTO());  
         }
 
         [HttpPost]
         public IActionResult GetProducts(ProductFilter? Filter = null)
         {
             var products = _ProductData.GetProducts(Filter);
-            return Ok(products);
+            return Ok(products.ToDTO());
         }
 
         [HttpGet("{Id}")]
         public IActionResult GetProductById(int Id)
         {
             var product = _ProductData.GetProductById(Id);
-            return product == null ? NotFound() : Ok(product);
+            return product == null ? NotFound() : Ok(product.ToDTO());
         }
 
         [HttpPost("new")]
@@ -67,13 +67,13 @@ namespace WebStore.WebAPI.Controllers
                 productDTO.Section,
                 productDTO.Brand);
 
-            return product == null ? NotFound() : Ok(product);
+            return product == null ? NotFound() : Ok(product.ToDTO());
         }
 
         [HttpPut]
-        public IActionResult UpdateProduct(Product product)
+        public IActionResult UpdateProduct(ProductDTO product)
         {
-            var success = _ProductData.Edit(product);
+            var success = _ProductData.Edit(product.FromDTO()!);
             return Ok(success);
         }
 

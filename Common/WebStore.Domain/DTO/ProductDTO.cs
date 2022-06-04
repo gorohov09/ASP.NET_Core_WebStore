@@ -88,6 +88,7 @@ namespace WebStore.Domain.DTO
                 Id = sectionDTO.Id,
                 Name = sectionDTO.Name,
                 Order = sectionDTO.Order,
+                ParentId = sectionDTO.ParentId,
             };
 
         public static IEnumerable<SectionDTO?> ToDTO(this IEnumerable<Section?> sections) => sections.Select(ToDTO);
