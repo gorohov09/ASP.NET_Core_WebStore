@@ -10,6 +10,7 @@ using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Orders;
 using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Test.Persons;
 using WebStore.WebAPI.Clients.Values;
@@ -29,7 +30,7 @@ services.AddTransient<IDbInitializer, DbInitializer>(); //ƒобавление сервиса дл€
 //services.AddScoped<IEmployeesData, SqlEmployeesData>(); //ƒобавление нашего сервиса дл€ работы с сотрудниками
 //services.AddScoped<IProductData, SqlProductData>(); //ƒобавление сервиса дл€ работы с продуктами
 services.AddScoped<ICartService, InCookiesCartService>();
-services.AddScoped<IOrderService, SqlOrderService>();
+//services.AddScoped<IOrderService, SqlOrderService>();
 services.AddScoped<IUserService, SqlUserService>();
 
 var configuration = builder.Configuration;
@@ -38,6 +39,7 @@ services.AddHttpClient<IValueService, ValuesClient>(client => client.BaseAddress
 services.AddHttpClient<IPersonsService, PersonsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 services.AddHttpClient<IEmployeesData, EmployeesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 services.AddHttpClient<IProductData, ProductsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+services.AddHttpClient<IOrderService, OrdersClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
 
 services.AddIdentity<User, Role>() //ƒобавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()
