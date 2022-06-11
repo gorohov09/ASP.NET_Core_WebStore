@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Json;
 using WebStore.Domain.Entities;
 using WebStore.Interfaces;
 using WebStore.WebAPI.Clients.Base;
@@ -13,7 +8,7 @@ namespace WebStore.WebAPI.Clients.Test.Persons
     public class PersonsClient : BaseClient, IPersonsService
     {
         public PersonsClient(HttpClient Client) :
-            base(Client, "api/person")
+            base(Client, WebAPIAddresses.Persons)
         {
 
         }

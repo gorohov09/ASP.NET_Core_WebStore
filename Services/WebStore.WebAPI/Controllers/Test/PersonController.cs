@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(WebAPIAddresses.Persons)]
     [ApiController]
     public class PersonController : ControllerBase
     {

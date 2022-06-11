@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 
 namespace WebStore.WebAPI.Controllers
 {
-    [Route("api/employees")] //http://localhost:5001/api/employees
+    [Route(WebAPIAddresses.Employees)] //http://localhost:5001/api/employees
     [ApiController]
     public class EmployeesApiController : ControllerBase
     {
