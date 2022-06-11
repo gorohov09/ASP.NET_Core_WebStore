@@ -30,7 +30,7 @@ namespace WebStore.WebAPI.Controllers
         public async Task<IActionResult> CreateOrder(string UserName, [FromBody] CreateOrderDTO Model)
         {
             var order = await _OrderService.CreateOrderAsync(UserName, Model.Items.ToCartView(), Model.Order);
-            return CreatedAtAction(nameof(GetOrderById), new { order.Id }, order);
+            return CreatedAtAction(nameof(GetOrderById), new { order.Id }, order.ToDTO());
         }
     }
 }
