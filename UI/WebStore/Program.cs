@@ -9,6 +9,9 @@ using WebStore.Interfaces.Services;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Orders;
+using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Test.Persons;
 using WebStore.WebAPI.Clients.Values;
 
@@ -23,15 +26,19 @@ services.AddControllersWithViews(opt =>
 services.AddDbContext<WebStoreDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
-services.AddScoped<IEmployeesData, SqlEmployeesData>(); //Добавление нашего сервиса для работы с сотрудниками
-services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для работы с продуктами
+
+
 services.AddScoped<ICartService, InCookiesCartService>();
-services.AddScoped<IOrderService, SqlOrderService>();
 services.AddScoped<IUserService, SqlUserService>();
 
 var configuration = builder.Configuration;
-services.AddHttpClient<IValueService, ValuesClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
-services.AddHttpClient<IPersonsService, PersonsClient>(client => client.BaseAddress = new(configuration["WebAPI"]));
+
+services.AddHttpClient("WebStoreAPI", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IValueService, ValuesClient>()
+    .AddTypedClient<IPersonsService, PersonsClient>()
+    .AddTypedClient<IEmployeesData, EmployeesClient>()
+    .AddTypedClient<IProductData, ProductsClient>()
+    .AddTypedClient<IOrderService, OrdersClient>();
 
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
     .AddEntityFrameworkStores<WebStoreDB>()

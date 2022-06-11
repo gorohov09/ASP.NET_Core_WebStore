@@ -77,10 +77,13 @@ namespace WebStore.Services.Services.InSQL
             if (db_product is null)
                 return false;
 
+            var section = _db.Sections.FirstOrDefault(section => section.Name == product.Section.Name);
+            var brand = _db.Brands.FirstOrDefault(brand => brand.Name == product.Brand.Name);
+
             db_product.Name = product.Name;
             db_product.Order = product.Order;
-            db_product.Section = product.Section;
-            db_product.Brand = product.Brand;
+            db_product.Section = section;
+            db_product.Brand = brand;
             db_product.ImageUrl = product.ImageUrl;
             db_product.Price = product.Price;
             db_product.SectionId = product.SectionId;
