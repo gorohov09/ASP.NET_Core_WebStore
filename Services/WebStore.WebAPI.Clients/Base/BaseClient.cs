@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebStore.WebAPI.Clients.Base
 {
-    public abstract class BaseClient
+    public abstract class BaseClient : IDisposable
     {
         protected HttpClient Http { get; }
 
@@ -49,6 +49,23 @@ namespace WebStore.WebAPI.Clients.Base
         {
             var response = await Http.DeleteAsync(url).ConfigureAwait(false);
             return response;
+        }
+
+        public void Dispose() => Dispose(true);
+
+        protected bool _Disposed;
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_Disposed) return;
+            _Disposed = true;
+
+            if (disposing)
+            {
+                //освобождаем управляемые ресурсы - обычные объекты с интерфейсом IDisposable
+                //Http.Dispose(); // не должны вызывать Dispose(), потому что не мы его создавали
+            }
+
+            //освобождаем неуправляемые ресурсы: COM-объекты например
         }
     }
 }
