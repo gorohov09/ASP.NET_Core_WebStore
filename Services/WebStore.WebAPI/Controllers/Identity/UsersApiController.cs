@@ -33,7 +33,7 @@ namespace WebStore.WebAPI.Controllers.Identity
         public async Task<string> GetUserNameAsync([FromBody] User user) => await _UserStore.GetUserNameAsync(user);
 
         [HttpPost("UserName/{name}")]
-        public async Task<string> SerUserNameAsync([FromBody] User user, string name)
+        public async Task<string> SetUserNameAsync([FromBody] User user, string name)
         {
             await _UserStore.SetUserNameAsync(user, name);
             await _UserStore.UpdateAsync(user);
