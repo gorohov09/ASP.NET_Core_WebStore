@@ -37,7 +37,7 @@ namespace WebStore.Services.Services.InSQL
             var employee = GetById(id);
             if (employee is null)
             {
-                _Logger.LogWarning("Попытка удаления отсутсвующего сотрудника с Id:{0}", employee.Id);
+                _Logger.LogWarning("Попытка удаления отсутсвующего сотрудника с Id:{0}", id);
                 return false;
             }
 
