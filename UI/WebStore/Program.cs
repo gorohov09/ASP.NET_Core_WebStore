@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
@@ -91,6 +92,8 @@ services.ConfigureApplicationCookie(opt =>
 
     opt.SlidingExpiration = true;
 });
+
+services.AddAutoMapper(Assembly.GetEntryAssembly()); //Добавление AutoMapper
 
 var app = builder.Build(); //Сборка приложения 
 

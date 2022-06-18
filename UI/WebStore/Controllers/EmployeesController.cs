@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
@@ -12,11 +13,13 @@ namespace WebStore.Controllers
     {
         private readonly IEmployeesData _EmployeesData;
         private readonly ILogger<EmployeesController> _Logger;
+        private readonly IMapper _Mapper;
 
-        public EmployeesController(IEmployeesData EmployeesData, ILogger<EmployeesController> Logger)
+        public EmployeesController(IEmployeesData EmployeesData, IMapper Mapper, ILogger<EmployeesController> Logger)
         {
             _Logger = Logger;
             _EmployeesData = EmployeesData;
+            _Mapper = Mapper;
         }
 
         public IActionResult Index()
@@ -57,17 +60,21 @@ namespace WebStore.Controllers
                     _Logger.LogWarning("При редактировании сотрудника с id:{0} он не был найден", id);
                     return NotFound();
                 }
-                    
-                var model = new EmployeeViewModel()
-                {
-                    Id = employee.Id,
-                    LastName = employee.LastName,
-                    FirstName = employee.FirstName,
-                    Patronymic = employee.Patronymic,
-                    Age = employee.Age,
-                    Birthday = employee.Birthday,
-                    Salary = employee.Salary
-                };
+
+                #region Старый вариант без AutoMapper
+                //var model = new EmployeeViewModel()
+                //{
+                //    Id = employee.Id,
+                //    LastName = employee.LastName,
+                //    FirstName = employee.FirstName,
+                //    Patronymic = employee.Patronymic,
+                //    Age = employee.Age,
+                //    Birthday = employee.Birthday,
+                //    Salary = employee.Salary
+                //};
+                #endregion
+
+                var model = _Mapper.Map<EmployeeViewModel>(employee);
 
                 return View(model);
             }
@@ -84,16 +91,20 @@ namespace WebStore.Controllers
             if (!ModelState.IsValid)
                 return View(Model);
 
-            var employee = new Employee
-            {
-                Id = Model.Id,
-                LastName = Model.LastName,
-                FirstName = Model.FirstName,
-                Patronymic = Model.Patronymic,
-                Age = Model.Age,
-                Birthday = Model.Birthday,
-                Salary = Model.Salary
-            };
+            #region Старый варинат без AutoMapper
+            //var employee = new Employee
+            //{
+            //    Id = Model.Id,
+            //    LastName = Model.LastName,
+            //    FirstName = Model.FirstName,
+            //    Patronymic = Model.Patronymic,
+            //    Age = Model.Age,
+            //    Birthday = Model.Birthday,
+            //    Salary = Model.Salary
+            //};
+            #endregion
+
+            var employee = _Mapper.Map<Employee>(Model);
 
             if (Model.Id == 0)
             {
@@ -115,19 +126,23 @@ namespace WebStore.Controllers
             if (id < 0)
                 return BadRequest();
             
-            var employee  =_EmployeesData.GetById(id);
+            var employee = _EmployeesData.GetById(id);
 
             if (employee is null)
                 return NotFound();
 
-            var model = new EmployeeViewModel()
-            {
-                Id = employee.Id,
-                LastName = employee.LastName,
-                FirstName = employee.FirstName,
-                Patronymic = employee.Patronymic,
-                Age = employee.Age
-            };
+            #region Старый варинат без AutoMapper
+            //var model = new EmployeeViewModel()
+            //{
+            //    Id = employee.Id,
+            //    LastName = employee.LastName,
+            //    FirstName = employee.FirstName,
+            //    Patronymic = employee.Patronymic,
+            //    Age = employee.Age
+            //};
+            #endregion
+
+            var model = _Mapper.Map<EmployeeViewModel>(employee);
 
             return View(model);
         }
