@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Conventions;
@@ -10,6 +11,7 @@ using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
 using WebStore.WebAPI.Clients.Employees;
+using WebStore.WebAPI.Clients.Identity;
 using WebStore.WebAPI.Clients.Orders;
 using WebStore.WebAPI.Clients.Products;
 using WebStore.WebAPI.Clients.Test.Persons;
@@ -25,9 +27,8 @@ services.AddControllersWithViews(opt =>
 
 services.AddDbContext<WebStoreDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
+
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
-
-
 services.AddScoped<ICartService, InCookiesCartService>();
 services.AddScoped<IUserService, SqlUserService>();
 
@@ -40,8 +41,20 @@ services.AddHttpClient("WebStoreAPI", client => client.BaseAddress = new(configu
     .AddTypedClient<IProductData, ProductsClient>()
     .AddTypedClient<IOrderService, OrdersClient>();
 
+services.AddHttpClient("WebStoreAPIIdentity", client => client.BaseAddress = new(configuration["WebAPI"]))
+    .AddTypedClient<IUserStore<User>, UsersClient>()
+    .AddTypedClient<IUserRoleStore<User>, UsersClient>()
+    .AddTypedClient<IUserPasswordStore<User>, UsersClient>()
+    .AddTypedClient<IUserEmailStore<User>, UsersClient>()
+    .AddTypedClient<IUserPhoneNumberStore<User>, UsersClient>()
+    .AddTypedClient<IUserTwoFactorStore<User>, UsersClient>()
+    .AddTypedClient<IUserLoginStore<User>, UsersClient>()
+    .AddTypedClient<IUserClaimStore<User>, UsersClient>()
+    .AddTypedClient<IRoleStore<Role>, RolesClient>();
+
+
 services.AddIdentity<User, Role>() //Добавление системы Identity в наши сервисы
-    .AddEntityFrameworkStores<WebStoreDB>()
+    //.AddEntityFrameworkStores<WebStoreDB>()
     .AddDefaultTokenProviders();
 
 
@@ -79,6 +92,8 @@ services.ConfigureApplicationCookie(opt =>
 
     opt.SlidingExpiration = true;
 });
+
+services.AddAutoMapper(Assembly.GetEntryAssembly()); //Добавление AutoMapper
 
 var app = builder.Build(); //Сборка приложения 
 

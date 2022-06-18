@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebStore.Domain.DTO;
 using WebStore.Domain.Entities;
+using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
 using WebStore.ViewModels;
 using WebStore.WebAPI.Clients.Base;
@@ -14,7 +15,7 @@ namespace WebStore.WebAPI.Clients.Orders
 {
     public class OrdersClient : BaseClient, IOrderService
     {
-        public OrdersClient(HttpClient Client) : base(Client, "api/orders")
+        public OrdersClient(HttpClient Client) : base(Client, WebAPIAddresses.Orders)
         {
         }
 
