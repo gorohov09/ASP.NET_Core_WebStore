@@ -19,6 +19,12 @@ using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args); //—оздание построител€ приложени€
 
+#region ∆естка€ настройка системы логировани€
+//builder.Logging.ClearProviders()
+//    .AddConsole(opt => opt.LogToStandardErrorThreshold = LogLevel.Information)
+//    .AddFilter("Microsoft", level => level >= LogLevel.Information); //“олько дл€ уровн€ выше, чем Information, будет производитьс€ запись в журнал дл€ категории - Microsoft
+#endregion
+
 var services = builder.Services; //ѕолучили сервисы нашего приложени€
 services.AddControllersWithViews(opt =>
 {
