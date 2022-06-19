@@ -61,19 +61,6 @@ namespace WebStore.Controllers
                     return NotFound();
                 }
 
-                #region Старый вариант без AutoMapper
-                //var model = new EmployeeViewModel()
-                //{
-                //    Id = employee.Id,
-                //    LastName = employee.LastName,
-                //    FirstName = employee.FirstName,
-                //    Patronymic = employee.Patronymic,
-                //    Age = employee.Age,
-                //    Birthday = employee.Birthday,
-                //    Salary = employee.Salary
-                //};
-                #endregion
-
                 var model = _Mapper.Map<EmployeeViewModel>(employee);
 
                 return View(model);
@@ -90,19 +77,6 @@ namespace WebStore.Controllers
 
             if (!ModelState.IsValid)
                 return View(Model);
-
-            #region Старый варинат без AutoMapper
-            //var employee = new Employee
-            //{
-            //    Id = Model.Id,
-            //    LastName = Model.LastName,
-            //    FirstName = Model.FirstName,
-            //    Patronymic = Model.Patronymic,
-            //    Age = Model.Age,
-            //    Birthday = Model.Birthday,
-            //    Salary = Model.Salary
-            //};
-            #endregion
 
             var employee = _Mapper.Map<Employee>(Model);
 
@@ -130,17 +104,6 @@ namespace WebStore.Controllers
 
             if (employee is null)
                 return NotFound();
-
-            #region Старый варинат без AutoMapper
-            //var model = new EmployeeViewModel()
-            //{
-            //    Id = employee.Id,
-            //    LastName = employee.LastName,
-            //    FirstName = employee.FirstName,
-            //    Patronymic = employee.Patronymic,
-            //    Age = employee.Age
-            //};
-            #endregion
 
             var model = _Mapper.Map<EmployeeViewModel>(employee);
 
