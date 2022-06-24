@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
 using System.Reflection;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
@@ -27,6 +30,16 @@ var builder = WebApplication.CreateBuilder(args); //Создание построителя приложе
 #endregion
 
 builder.Logging.AddLog4Net();
+
+builder.Host.UseSerilog((host, log) => log.ReadFrom.Configuration(host.Configuration)
+    .MinimumLevel.Debug()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(
+        outputTemplate: "[{Timestamp:HH:mm:ss.fff} {Level:u3}]{SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}")
+    .WriteTo.RollingFile($@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log")
+    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+);
 
 var services = builder.Services; //Получили сервисы нашего приложения
 services.AddControllersWithViews(opt =>
