@@ -7,6 +7,7 @@ using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
+using WebStore.Logging;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
@@ -24,6 +25,8 @@ var builder = WebApplication.CreateBuilder(args); //—оздание построител€ приложе
 //    .AddConsole(opt => opt.LogToStandardErrorThreshold = LogLevel.Information)
 //    .AddFilter("Microsoft", level => level >= LogLevel.Information); //“олько дл€ уровн€ выше, чем Information, будет производитьс€ запись в журнал дл€ категории - Microsoft
 #endregion
+
+builder.Logging.AddLog4Net();
 
 var services = builder.Services; //ѕолучили сервисы нашего приложени€
 services.AddControllersWithViews(opt =>
