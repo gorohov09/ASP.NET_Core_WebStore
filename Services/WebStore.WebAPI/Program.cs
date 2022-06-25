@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Formatting.Json;
+using Serilog.Events;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
@@ -9,8 +12,12 @@ using WebStore.Services.Services.InSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddLog4Net();
+//builder.Logging.AddLog4Net();
 
+builder.Host.UseSerilog((host, log) => log
+    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
+    .ReadFrom.Configuration(host.Configuration));
+    
 //---------Конфигурация системы внедрения зависимостей--------------------//
 var services = builder.Services;
 
@@ -71,6 +78,8 @@ services.AddScoped<IProductData, SqlProductData>(); //Добавление сервиса для раб
 services.AddScoped<IOrderService, SqlOrderService>();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 //-------Конвейер запроса------------------------//
 if (app.Environment.IsDevelopment())
