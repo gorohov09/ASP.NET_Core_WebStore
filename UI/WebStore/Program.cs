@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System.Reflection;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
@@ -7,6 +8,7 @@ using WebStore.Infrastructure.Conventions;
 using WebStore.Infrastructure.Middleware;
 using WebStore.Interfaces;
 using WebStore.Interfaces.Services;
+using WebStore.Logging;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InCookies;
 using WebStore.Services.Services.InSQL;
@@ -18,6 +20,17 @@ using WebStore.WebAPI.Clients.Test.Persons;
 using WebStore.WebAPI.Clients.Values;
 
 var builder = WebApplication.CreateBuilder(args); //Создание построителя приложения
+
+#region Жесткая настройка системы логирования
+//builder.Logging.ClearProviders()
+//    .AddConsole(opt => opt.LogToStandardErrorThreshold = LogLevel.Information)
+//    .AddFilter("Microsoft", level => level >= LogLevel.Information); //Только для уровня выше, чем Information, будет производиться запись в журнал для категории - Microsoft
+#endregion
+
+builder.Logging.AddLog4Net();
+
+builder.Host.UseSerilog((host, log) => log
+    .ReadFrom.Configuration(host.Configuration));
 
 var services = builder.Services; //Получили сервисы нашего приложения
 services.AddControllersWithViews(opt =>
@@ -122,6 +135,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseWelcomePage("/welcome");
 

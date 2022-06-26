@@ -1,14 +1,21 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Interfaces.Services;
+using WebStore.Logging;
 using WebStore.Services.Services;
 using WebStore.Services.Services.InSQL;
+using WebStore.WebAPI.Infrastructure.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//builder.Logging.AddLog4Net();
 
+builder.Host.UseSerilog((host, log) => log
+    .ReadFrom.Configuration(host.Configuration));
+    
 //---------Конфигурация системы внедрения зависимостей--------------------//
 var services = builder.Services;
 
@@ -70,6 +77,8 @@ services.AddScoped<IOrderService, SqlOrderService>();
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
+
 //-------Конвейер запроса------------------------//
 if (app.Environment.IsDevelopment())
 {
@@ -78,6 +87,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

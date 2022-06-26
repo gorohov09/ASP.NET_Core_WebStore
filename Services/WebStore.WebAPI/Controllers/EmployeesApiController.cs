@@ -10,8 +10,13 @@ namespace WebStore.WebAPI.Controllers
     public class EmployeesApiController : ControllerBase
     {
         private readonly IEmployeesData _EmployeesData;
+        private readonly ILogger<EmployeesApiController> _Logger;
 
-        public EmployeesApiController(IEmployeesData EmployeesData) { _EmployeesData = EmployeesData; }
+        public EmployeesApiController(IEmployeesData EmployeesData, ILogger<EmployeesApiController> Logger) 
+        {
+            _EmployeesData = EmployeesData;
+            _Logger = Logger;
+        }
 
         /// <summary>
         /// Получение всех сотрудников
@@ -21,6 +26,7 @@ namespace WebStore.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Employee>))]
         public IActionResult Get()
         {
+            _Logger.LogInformation("Начало процесса получения сотрудников");
             var employees = _EmployeesData.GetAll();
             return Ok(employees);
         }
@@ -35,6 +41,7 @@ namespace WebStore.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetById(int Id)
         {
+            _Logger.LogInformation("Получение сотрудника по Id");
             var employee = _EmployeesData.GetById(Id);
             return employee == null ? NotFound() : Ok(employee);
         }
@@ -48,6 +55,7 @@ namespace WebStore.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Employee))]
         public IActionResult Add(Employee employee)
         {
+            _Logger.LogInformation("Добавление сотрудника");
             var id = _EmployeesData.Add(employee);
             return CreatedAtAction(nameof(GetById), new {Id = id}, employee);
         }
@@ -61,7 +69,12 @@ namespace WebStore.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
         public IActionResult Update(Employee employee)
         {
+            _Logger.LogInformation("Обновление информации о сотруднике");
             var success = _EmployeesData.Edit(employee);
+            if (success)
+                _Logger.LogInformation("Информация о сотруднике была успешно обновлена");
+            else
+                _Logger.LogWarning("Произошла ошибка при обновлении информации о сотруднике");
             return Ok(success);
         }
 
@@ -75,7 +88,12 @@ namespace WebStore.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Delete(int Id)
         {
+            _Logger.LogInformation("Удаление сотрудника по Id");
             var result = _EmployeesData.Delete(Id);
+            if (result)
+                _Logger.LogInformation("Сотрудник успешно удален");
+            else
+                _Logger.LogWarning("Произошла ошибка при удалении сотрудника");
             return result ? Ok(true) : NotFound(false);
         }
     }
