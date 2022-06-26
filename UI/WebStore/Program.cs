@@ -135,6 +135,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<TestMiddleware>(); //Добавление своего промежуточного П.О.
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseWelcomePage("/welcome");
 
