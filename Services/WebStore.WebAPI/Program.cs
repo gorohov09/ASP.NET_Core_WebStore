@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Logging.AddLog4Net();
 
 builder.Host.UseSerilog((host, log) => log
-    .WriteTo.File(new JsonFormatter(",", true), $@".\Logs\WebStore[{DateTime.Now:yyyy-MM-ddTHH-mm-ss}].log.json")
     .ReadFrom.Configuration(host.Configuration));
     
 //---------Конфигурация системы внедрения зависимостей--------------------//
