@@ -1,5 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System.Linq;
 using WebStore.Controllers;
+using WebStore.Domain;
+using WebStore.Domain.Entities;
+using WebStore.Interfaces.Services;
 using Assert = Xunit.Assert;
 
 namespace WebStore.Tests.Controllers;
@@ -7,6 +13,22 @@ namespace WebStore.Tests.Controllers;
 [TestClass]
 public class HomeControllerTests
 {
+    [TestMethod]
+    public void Index_Returns_View()
+    {
+        var product_data_mock = new Mock<IProductData>(); //Создали мок
+        product_data_mock.Setup(s => s.GetProducts(It.IsAny<ProductFilter>()))
+            .Returns(Enumerable.Empty<Product>());
+
+        IProductData product_data = product_data_mock.Object; //Получили реализацию мока
+
+        var controller = new HomeController();
+
+        var result = controller.Index(product_data);
+
+        Assert.IsType<ViewResult>(result);
+    }
+
     [TestMethod]
     public void ConfiguredAction_Returns_string_value()
     {
