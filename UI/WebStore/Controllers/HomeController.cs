@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Mapping;
-using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
@@ -24,6 +23,6 @@ namespace WebStore.Controllers
             return $"Hello World! {id} - {Value1}";
         }
 
-        //public void Throw(string Message) => throw new ApplicationException(Message);
+        public void Throw(string Message) => throw new ApplicationException(Message);
     }
 }
