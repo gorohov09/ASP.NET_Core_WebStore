@@ -24,5 +24,10 @@ namespace WebStore.Controllers
         }
 
         public void Throw(string Message) => throw new ApplicationException(Message);
+
+        public IActionResult Status(string Code)
+        {
+            return Content($"Status code - {Code}");
+        }
     }
 }
