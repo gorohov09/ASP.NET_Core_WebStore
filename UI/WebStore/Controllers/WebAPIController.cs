@@ -17,10 +17,10 @@ namespace WebStore.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //var values = _ValuesService.GetValues();
-            var persons = await _PersonsService.GetPersons();
+            var values = _ValuesService.GetValues();
+            //var persons = await _PersonsService.GetPersons();
 
-            return View(persons);
+            return View(values);
         }
     }
 }
