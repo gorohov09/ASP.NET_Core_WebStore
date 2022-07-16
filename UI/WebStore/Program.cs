@@ -42,7 +42,8 @@ services.AddDbContext<WebStoreDB>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"))); //Добавление сервиса для работы с БД
 
 services.AddTransient<IDbInitializer, DbInitializer>(); //Добавление сервиса для инициализации БД
-services.AddScoped<ICartService, InCookiesCartService>();
+services.AddScoped<ICartService, CartService>();
+services.AddScoped<ICartStore, InCookiesCartStore>();
 services.AddScoped<IUserService, SqlUserService>();
 
 var configuration = builder.Configuration;
