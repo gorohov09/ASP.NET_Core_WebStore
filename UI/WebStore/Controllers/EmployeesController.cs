@@ -84,9 +84,7 @@ namespace WebStore.Controllers
             {
                 _EmployeesData.Add(employee);
                 _Logger.LogInformation("Создание нового сотрудника {0}", employee);
-
             }
-
             else if (!_EmployeesData.Edit(employee))
                 return NotFound();
 
