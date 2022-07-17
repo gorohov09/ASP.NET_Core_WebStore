@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebStore.Interfaces.Services;
 using WebStore.Services.Mapping;
-using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
@@ -19,6 +18,16 @@ namespace WebStore.Controllers
             return View();
         }
 
-        //public void Throw(string Message) => throw new ApplicationException(Message);
+        public string ConfiguredAction(string id, string Value1)
+        {
+            return $"Hello World! {id} - {Value1}";
+        }
+
+        public void Throw(string Message) => throw new ApplicationException(Message);
+
+        public IActionResult Status(string Code)
+        {
+            return Content($"Status code - {Code}");
+        }
     }
 }
