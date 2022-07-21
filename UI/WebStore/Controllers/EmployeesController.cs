@@ -8,7 +8,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;
