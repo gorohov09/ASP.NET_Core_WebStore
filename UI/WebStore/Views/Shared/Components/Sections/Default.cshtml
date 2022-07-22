@@ -21,18 +21,22 @@
                                         @foreach (var child_section in parent_section.ChildSection)
                                         {
                                             <ul>
-                                                <li><a href="#">@child_section.Name </a></li>
+                                                <li><a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@child_section.Id">
+                                                    @child_section.Name </a>
+                                                </li>
                                             </ul>
                                         }
-                    </div>
+                                    </div>
                                 </div>
-            </div>
+                             </div>
         }
         else
         {
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title"><a href="#">@parent_section.Name</a></h4>
+                                    <h4 class="panel-title">
+                                        <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@parent_section.Id">@parent_section.Name</a>
+                                    </h4>
                                 </div>
                             </div>
         }
