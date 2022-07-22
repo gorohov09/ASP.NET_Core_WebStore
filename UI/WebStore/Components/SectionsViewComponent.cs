@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain.ViewModels;
 using WebStore.Interfaces.Services;
-using WebStore.ViewModels;
 
 namespace WebStore.Components
 {
@@ -13,8 +13,27 @@ namespace WebStore.Components
             _ProductData = ProductData;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(string SectionId)
         {
+            //SectionId = HttpContext.Request.Query["SectionId"]; Деменастрация как получить что-либо из контекста
+
+            var section_id = int.TryParse(SectionId, out var id) ? id : (int?)null;
+
+            var sections = GetSectionViewModel(section_id, out var parent_section_id);
+
+            var model = new SelectableSectionsViewModel
+            {
+                Sections = sections,
+                SectionId = section_id,
+                ParentSectionId = parent_section_id
+            };
+
+            return View(model);
+        }
+
+        private IEnumerable<SectionViewModel> GetSectionViewModel(int? section_id, out int? parent_section_id)
+        {
+            parent_section_id = null;
             var sections = _ProductData.GetSections();
 
             var parent_sections = sections.Where(s => s.ParentId is null);
@@ -31,9 +50,11 @@ namespace WebStore.Components
             foreach (var parent_section in parent_sections_view)
             {
                 var childs = sections.Where(s => s.ParentId == parent_section.Id);
-
+                
                 foreach (var child_section in childs)
                 {
+                    if (child_section.Id == section_id)
+                        parent_section_id = parent_section.Id;
                     parent_section.ChildSection.Add(new SectionViewModel
                     {
                         Id = child_section.Id,
@@ -48,7 +69,7 @@ namespace WebStore.Components
 
             parent_sections_view.Sort((a, b) => Comparer<int>.Default.Compare(a.Order, b.Order));
 
-            return View(parent_sections_view);
+            return parent_sections_view;
         }
     }
 }
