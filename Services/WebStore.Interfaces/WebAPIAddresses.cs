@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebStore.Interfaces
+﻿namespace WebStore.Interfaces
 {
     public static class WebAPIAddresses
     {
@@ -13,6 +7,7 @@ namespace WebStore.Interfaces
         public const string Products = "api/v1/products";
         public const string Values = "api/v1/values";
         public const string Persons = "api/v1/persons";
+        public const string Blogs = "api/v1/blogs";
 
         public static class Identity
         {
