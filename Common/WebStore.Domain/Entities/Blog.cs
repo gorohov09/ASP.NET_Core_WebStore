@@ -10,13 +10,13 @@ public class Blog : Entity
     [Required]
     public string Title { get; set; } = string.Empty;
 
-    public string Author { get; set; } = string.Empty;
+    public string? Author { get; set; }
 
     public DateTime Date { get; set; }
 
     public int? Stars { get; set; }
 
-    public string ImageUrl { get; set; } = string.Empty;
+    public string? ImageUrl { get; set; }
 
-    public string Description { get; set; } = string.Empty;
+    public string? Description { get; set; }
 }
