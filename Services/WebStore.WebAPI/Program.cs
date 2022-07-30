@@ -74,6 +74,7 @@ services.Configure<IdentityOptions>(opt =>
 services.AddScoped<IEmployeesData, SqlEmployeesData>(); //ƒобавление нашего сервиса дл€ работы с сотрудниками
 services.AddScoped<IProductData, SqlProductData>(); //ƒобавление сервиса дл€ работы с продуктами
 services.AddScoped<IOrderService, SqlOrderService>();
+services.AddScoped<IBlogService, SqlBlogService>();
 
 var app = builder.Build();
 
