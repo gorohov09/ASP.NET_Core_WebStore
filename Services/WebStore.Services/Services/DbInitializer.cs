@@ -45,6 +45,8 @@ namespace WebStore.Services.Services
 
             await InitializeIdentityAsync(cancel).ConfigureAwait(false);
 
+            await InitializeBlogsAsync(cancel).ConfigureAwait(false);
+
             _Logger.LogInformation("Инициализация БД выполнена успешно");
         }
 
@@ -205,6 +207,28 @@ namespace WebStore.Services.Services
             }
 
             _Logger.LogInformation($"Данная система Identity успешно добавлена в БД за {timer.Elapsed.TotalSeconds} c");
+        }
+
+        private async Task InitializeBlogsAsync(CancellationToken cancel)
+        {
+            if (await _db.Blogs.AnyAsync())
+            {
+                _Logger.LogInformation("Инициализация тестовых данных блогов не требуется");
+                return;
+            }
+
+            await using (await _db.Database.BeginTransactionAsync())
+            {
+                TestData.Blogs.ForEach(blg => blg.Id = 0);
+
+                await _db.AddRangeAsync(TestData.Blogs, cancel);
+
+                await _db.SaveChangesAsync(cancel);
+
+                await _db.Database.CommitTransactionAsync(cancel);
+            }
+
+            _Logger.LogInformation("Инициализация тестовых данных блогов выполнена успешно");
         }
     }
 }

@@ -72,5 +72,18 @@ namespace WebStore.Services.Data
             new Product { Id = 11, Name = "Джинсы женские", Price = 1025, ImageUrl = "product11.jpg", Order = 10, SectionId = 25, BrandId = 3 },
             new Product { Id = 12, Name = "Летний костюм", Price = 1025, ImageUrl = "product12.jpg", Order = 11, SectionId = 25, BrandId = 3 },
         };
+
+        public static List<Blog> Blogs { get; } = new List<Blog>()
+        {
+            new Blog { Id = 1, Title = "Girls Pink T Shirt arrived in store", Author = "Mac Doe", ImageUrl = "blog-one.jpg", 
+                Description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.", 
+                Stars = 4, Date = new DateTime(2013, 12, 5, 13, 33, 0)},
+            new Blog { Id = 2, Title = "Одежда в Испании", Author = "Antonina Racuze", ImageUrl = "blog-two.jpg",
+                Description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                Stars = 5, Date = new DateTime(2015, 7, 5, 18, 44, 0)},
+            new Blog { Id = 3, Title = "Одежда в России", Author = "Горохов Андрей", ImageUrl = "blog-three.jpg",
+                Description = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+                Stars = 3, Date = new DateTime(2020, 7, 12, 15, 44, 0)},
+        };
     }
 }
